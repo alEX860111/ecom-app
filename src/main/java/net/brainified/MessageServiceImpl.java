@@ -1,4 +1,4 @@
-package hello;
+package net.brainified;
 
 import org.springframework.stereotype.Service;
 

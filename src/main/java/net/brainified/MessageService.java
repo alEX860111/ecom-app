@@ -1,4 +1,4 @@
-package hello;
+package net.brainified;
 
 public interface MessageService {
 
