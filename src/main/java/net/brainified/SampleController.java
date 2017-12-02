@@ -1,22 +1,22 @@
 package net.brainified;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import java.util.List;
 
-@Controller
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
 public class SampleController {
 
-  private MessageService messageService;
+  private ProductService productService;
 
-  public SampleController(final MessageService messageService) {
-    this.messageService = messageService;
+  public SampleController(final ProductService productService) {
+    this.productService = productService;
   }
 
-  @RequestMapping("/")
-  @ResponseBody
-  String home() {
-    return messageService.getMessage();
+  @GetMapping("/")
+  List<Product> home() {
+    return productService.getProducts();
   }
 
 }
