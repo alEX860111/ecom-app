@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SampleController {
+final class ProductController {
 
   private ProductService productService;
 
-  public SampleController(final ProductService productService) {
+  public ProductController(final ProductService productService) {
     this.productService = productService;
   }
 
