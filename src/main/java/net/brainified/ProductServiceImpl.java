@@ -1,15 +1,16 @@
 package net.brainified;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import reactor.core.publisher.Flux;
 
 @Service
 final class ProductServiceImpl implements ProductService {
 
   @Override
-  public List<Product> getProducts() {
+  public Flux<Product> getProducts() {
     final Product iphone = new Product();
     iphone.setName("iphone");
     iphone.setPrice(1199.00d);
@@ -18,7 +19,7 @@ final class ProductServiceImpl implements ProductService {
     razr.setName("razr");
     razr.setPrice(499.00d);
 
-    return Arrays.asList(iphone, razr);
+    return Flux.fromIterable(Arrays.asList(iphone, razr));
   }
 
 }

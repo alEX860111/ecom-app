@@ -1,9 +1,9 @@
 package net.brainified;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import reactor.core.publisher.Flux;
 
 @RestController
 final class ProductController {
@@ -15,7 +15,7 @@ final class ProductController {
   }
 
   @GetMapping("/")
-  List<Product> home() {
+  Flux<Product> home() {
     return productService.getProducts();
   }
 

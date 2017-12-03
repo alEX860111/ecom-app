@@ -1,9 +1,9 @@
 package net.brainified;
 
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface ProductService {
 
-  public List<Product> getProducts();
+  public Flux<Product> getProducts();
 
 }
