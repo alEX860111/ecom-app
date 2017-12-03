@@ -1,9 +1,9 @@
-package net.brainified;
+package net.brainified.db;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-final class Image {
+public final class Image {
 
   private String title;
 

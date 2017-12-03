@@ -1,10 +1,10 @@
-package net.brainified;
+package net.brainified.db;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "products")
-final class Product {
+public final class Product {
 
   @Id
   private String id;
