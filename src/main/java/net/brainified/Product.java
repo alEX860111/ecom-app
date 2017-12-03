@@ -1,10 +1,37 @@
 package net.brainified;
 
-public final class Product {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "products")
+final class Product {
+
+  @Id
+  private String id;
+
+  private String createdAt;
 
   private String name;
 
   private Double price;
+
+  private Image image;
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(String createdAt) {
+    this.createdAt = createdAt;
+  }
 
   public String getName() {
     return name;
@@ -20,6 +47,14 @@ public final class Product {
 
   public void setPrice(Double price) {
     this.price = price;
+  }
+
+  public Image getImage() {
+    return image;
+  }
+
+  public void setImage(Image image) {
+    this.image = image;
   }
 
 }

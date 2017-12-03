@@ -8,14 +8,14 @@ import reactor.core.publisher.Flux;
 @RestController
 final class ProductController {
 
-  private ProductService productService;
+  private final ProductService productService;
 
   public ProductController(final ProductService productService) {
     this.productService = productService;
   }
 
-  @GetMapping("/")
-  Flux<Product> home() {
+  @GetMapping("/products")
+  public Flux<Product> getProducts() {
     return productService.getProducts();
   }
 
