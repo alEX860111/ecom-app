@@ -1,5 +1,8 @@
 package net.brainified.db;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,7 +12,8 @@ public final class Product {
   @Id
   private String id;
 
-  private String createdAt;
+  @CreatedDate
+  private LocalDateTime createdAt;
 
   private String name;
 
@@ -21,23 +25,23 @@ public final class Product {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(final String id) {
     this.id = id;
   }
 
-  public String getCreatedAt() {
+  public LocalDateTime getCreatedAt() {
     return createdAt;
   }
 
-  public void setCreatedAt(String createdAt) {
+  public void setCreatedAt(final LocalDateTime createdAt) {
     this.createdAt = createdAt;
-  }
+  } 
 
-  public String getName() {
+  public String getName() { 
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(final String name) {
     this.name = name;
   }
 
@@ -45,7 +49,7 @@ public final class Product {
     return price;
   }
 
-  public void setPrice(Double price) {
+  public void setPrice(final Double price) {
     this.price = price;
   }
 
@@ -53,7 +57,7 @@ public final class Product {
     return image;
   }
 
-  public void setImage(Image image) {
+  public void setImage(final Image image) {
     this.image = image;
   }
 
