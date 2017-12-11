@@ -1,5 +1,6 @@
 package net.brainified.domain;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.brainified.db.ProductDocument;
@@ -20,8 +21,8 @@ final class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Flux<Product> getProducts() {
-    return productRepository.findAll().map(productConverter::convertProductDocumentToProduct);
+  public Flux<Product> getProducts(final Pageable pageable) {
+    return productRepository.findAllBy(pageable).map(productConverter::convertProductDocumentToProduct);
   }
 
   @Override
