@@ -1,5 +1,7 @@
 package net.brainified.rest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +35,10 @@ final class ProductController {
   }
 
   @GetMapping("/{productId}")
-  public Mono<Product> getProduct(@PathVariable final String productId) {
-    return productService.getProduct(productId);
+  public Mono<ResponseEntity<Product>> getProduct(@PathVariable final String productId) {
+    return productService.getProduct(productId)
+        .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+        .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
 }
