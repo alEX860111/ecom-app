@@ -3,7 +3,7 @@ package net.brainified.db;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public final class Image {
+public final class ImageDocument {
 
   private String title;
 
@@ -13,7 +13,7 @@ public final class Image {
     return title;
   }
 
-  public void setTitle(String title) {
+  public void setTitle(final String title) {
     this.title = title;
   }
 
@@ -21,7 +21,7 @@ public final class Image {
     return path;
   }
 
-  public void setPath(String path) {
+  public void setPath(final String path) {
     this.path = path;
   }
 

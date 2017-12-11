@@ -2,7 +2,7 @@ package net.brainified.domain;
 
 import org.springframework.stereotype.Service;
 
-import net.brainified.db.Product;
+import net.brainified.db.ProductDocument;
 import net.brainified.db.ProductRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -10,25 +10,29 @@ import reactor.core.publisher.Mono;
 @Service
 final class ProductServiceImpl implements ProductService {
 
-  private ProductRepository productRepository;
+  private final ProductRepository productRepository;
 
-  public ProductServiceImpl(final ProductRepository productRepository) {
+  private final ProductConverter productConverter;
+
+  public ProductServiceImpl(final ProductRepository productRepository, final ProductConverter productConverter) {
     this.productRepository = productRepository;
+    this.productConverter = productConverter;
   }
 
   @Override
   public Flux<Product> getProducts() {
-    return productRepository.findAll();
+    return productRepository.findAll().map(productConverter::convertProductDocumentToProduct);
   }
 
   @Override
   public Mono<Product> getProduct(final String productId) {
-    return productRepository.findById(productId);
+    return productRepository.findById(productId).map(productConverter::convertProductDocumentToProduct);
   }
 
   @Override
-  public Mono<Product> addProduct(Product product) {
-    return productRepository.save(product);
+  public Mono<Product> addProduct(final Product product) {
+    final ProductDocument productDocument = productConverter.convertProductToProductDocument(product);
+    return productRepository.save(productDocument).map(productConverter::convertProductDocumentToProduct);
   }
 
 }

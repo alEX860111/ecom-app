@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "products")
-public final class Product {
+public final class ProductDocument {
 
   @Id
   private String id;
@@ -19,7 +19,7 @@ public final class Product {
 
   private Double price;
 
-  private Image image;
+  private ImageDocument image;
 
   public String getId() {
     return id;
@@ -53,11 +53,11 @@ public final class Product {
     this.price = price;
   }
 
-  public Image getImage() {
+  public ImageDocument getImage() {
     return image;
   }
 
-  public void setImage(final Image image) {
+  public void setImage(final ImageDocument image) {
     this.image = image;
   }
 
