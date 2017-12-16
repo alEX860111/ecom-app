@@ -7,6 +7,6 @@ import reactor.core.publisher.Flux;
 
 public interface ProductRepository extends ReactiveSortingRepository<ProductDocument, String> {
 
-  Flux<ProductDocument> findAllBy(final Pageable pageable);
+  Flux<ProductDocument> findAllBy(Pageable pageable);
 
 }

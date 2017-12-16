@@ -36,4 +36,9 @@ final class ProductServiceImpl implements ProductService {
     return productRepository.save(productDocument).map(productConverter::convertProductDocumentToProduct);
   }
 
+  @Override
+  public Mono<Product> deleteProduct(final String productId) {
+    return getProduct(productId).delayUntil(product -> productRepository.deleteById(product.getId()));
+  }
+
 }

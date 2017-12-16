@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +47,12 @@ final class ProductController {
   @GetMapping("/{productId}")
   public Mono<ResponseEntity<Product>> getProduct(@PathVariable final String productId) {
     return productService.getProduct(productId).map(product -> ResponseEntity.ok(product))
+        .defaultIfEmpty(ResponseEntity.notFound().build());
+  }
+
+  @DeleteMapping("/{productId}")
+  public Mono<ResponseEntity<Product>> deleteProduct(@PathVariable final String productId) {
+    return productService.deleteProduct(productId).map(deletedProduct -> ResponseEntity.ok(deletedProduct))
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 

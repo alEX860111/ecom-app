@@ -13,4 +13,6 @@ public interface ProductService {
 
   public Mono<Product> addProduct(Product product);
 
+  public Mono<Product> deleteProduct(String productId);
+
 }
