@@ -19,6 +19,9 @@ final class ProductConverterImpl implements ProductConverter {
   public ProductDocument convertProductToProductDocument(final Product product) {
     final ProductDocument productDocument = new ProductDocument();
 
+    productDocument.setId(product.getId());
+    productDocument.setCreatedAt(product.getCreatedAt());
+
     productDocument.setName(product.getName());
     productDocument.setPrice(product.getPrice());
     productDocument.setImage(imageConverter.convertImageToImageDocument(product.getImage()));

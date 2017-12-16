@@ -2,15 +2,15 @@ package net.brainified.domain;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 public final class Product {
 
-  @Id
+  @JsonProperty(access = Access.READ_ONLY)
   private String id;
 
-  @CreatedDate
+  @JsonProperty(access = Access.READ_ONLY)
   private LocalDateTime createdAt;
 
   private String name;
