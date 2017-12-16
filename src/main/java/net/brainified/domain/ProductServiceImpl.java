@@ -21,6 +21,12 @@ final class ProductServiceImpl implements ProductService {
   }
 
   @Override
+  public Mono<Product> addProduct(final Product product) {
+    final ProductDocument productDocument = productConverter.convertProductToProductDocument(product);
+    return productRepository.save(productDocument).map(productConverter::convertProductDocumentToProduct);
+  }
+
+  @Override
   public Flux<Product> getProducts(final Pageable pageable) {
     return productRepository.findAllBy(pageable).map(productConverter::convertProductDocumentToProduct);
   }
@@ -31,9 +37,15 @@ final class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Mono<Product> addProduct(final Product product) {
-    final ProductDocument productDocument = productConverter.convertProductToProductDocument(product);
-    return productRepository.save(productDocument).map(productConverter::convertProductDocumentToProduct);
+  public Mono<Product> updateProduct(final Product product) {
+    return productRepository.existsById(product.getId()).flatMap(exists -> {
+      if (exists) {
+        final ProductDocument productDocument = productConverter.convertProductToProductDocument(product);
+        return productRepository.save(productDocument).map(productConverter::convertProductDocumentToProduct);
+      } else {
+        return Mono.empty();
+      }
+    });
   }
 
   @Override

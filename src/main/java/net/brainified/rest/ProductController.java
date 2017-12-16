@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,12 +30,6 @@ final class ProductController {
     this.productService = productService;
   }
 
-  @GetMapping
-  public Flux<Product> getProducts(@RequestParam(name = "page", defaultValue = "0") final int page,
-      @RequestParam(name = "size", defaultValue = "10") final int size) {
-    return productService.getProducts(PageRequest.of(page, size));
-  }
-
   @PostMapping
   public Mono<ResponseEntity<Product>> addProduct(@RequestBody final Product product,
       final UriComponentsBuilder uriComponentBuilder) {
@@ -44,9 +39,22 @@ final class ProductController {
     });
   }
 
+  @GetMapping
+  public Flux<Product> getProducts(@RequestParam(name = "page", defaultValue = "0") final int page,
+      @RequestParam(name = "size", defaultValue = "10") final int size) {
+    return productService.getProducts(PageRequest.of(page, size));
+  }
+
   @GetMapping("/{productId}")
   public Mono<ResponseEntity<Product>> getProduct(@PathVariable final String productId) {
     return productService.getProduct(productId).map(product -> ResponseEntity.ok(product))
+        .defaultIfEmpty(ResponseEntity.notFound().build());
+  }
+
+  @PutMapping("/{productId}")
+  public Mono<ResponseEntity<Product>> updateProduct(@RequestBody final Product product, @PathVariable final String productId) {
+    product.setId(productId);
+    return productService.updateProduct(product).map(updatedProduct -> ResponseEntity.ok(updatedProduct))
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
