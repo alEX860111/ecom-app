@@ -38,13 +38,10 @@ final class ProductServiceImpl implements ProductService {
 
   @Override
   public Mono<Product> updateProduct(final Product product) {
-    return productRepository.existsById(product.getId()).flatMap(exists -> {
-      if (exists) {
-        final ProductDocument productDocument = productConverter.convertProductToProductDocument(product);
-        return productRepository.save(productDocument).map(productConverter::convertProductDocumentToProduct);
-      } else {
-        return Mono.empty();
-      }
+    return getProduct(product.getId()).flatMap(p -> {
+      product.setCreatedAt(p.getCreatedAt());
+      final ProductDocument productDocument = productConverter.convertProductToProductDocument(product);
+      return productRepository.save(productDocument).map(productConverter::convertProductDocumentToProduct);
     });
   }
 
