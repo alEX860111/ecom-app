@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import net.brainified.domain.Product;
+import net.brainified.domain.ProductCoreData;
 import net.brainified.domain.ProductService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,9 +32,9 @@ final class ProductController {
   }
 
   @PostMapping
-  public Mono<ResponseEntity<Product>> addProduct(@RequestBody final Product product,
+  public Mono<ResponseEntity<Product>> addProduct(@RequestBody final ProductCoreData productCoreData,
       final UriComponentsBuilder uriComponentBuilder) {
-    return productService.addProduct(product).map(savedProduct -> {
+    return productService.addProduct(productCoreData).map(savedProduct -> {
       final URI location = URI.create(uriComponentBuilder.path("/").path(savedProduct.getId()).toUriString());
       return ResponseEntity.created(location).body(savedProduct);
     });
@@ -52,9 +53,8 @@ final class ProductController {
   }
 
   @PutMapping("/{productId}")
-  public Mono<ResponseEntity<Product>> updateProduct(@RequestBody final Product product, @PathVariable final String productId) {
-    product.setId(productId);
-    return productService.updateProduct(product).map(updatedProduct -> ResponseEntity.ok(updatedProduct))
+  public Mono<ResponseEntity<Product>> updateProduct(@RequestBody final ProductCoreData productCoreData, @PathVariable final String productId) {
+    return productService.updateProduct(productId, productCoreData).map(updatedProduct -> ResponseEntity.ok(updatedProduct))
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
