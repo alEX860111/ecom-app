@@ -3,6 +3,8 @@ package net.brainified.rest;
 import java.net.URI;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,9 +43,12 @@ final class ProductController {
   }
 
   @GetMapping
-  public Flux<Product> getProducts(@RequestParam(name = "page", defaultValue = "0") final int page,
-      @RequestParam(name = "size", defaultValue = "10") final int size) {
-    return productService.getProducts(PageRequest.of(page, size));
+  public Flux<Product> getProducts(@RequestParam(name = "page-index", defaultValue = "0") final int pageIndex,
+      @RequestParam(name = "page-size", defaultValue = "10") final int pageSize,
+      @RequestParam(name = "sort-direction", defaultValue = "desc") final String sortDirection,
+      @RequestParam(name = "sort-property", defaultValue="createdAt") final String sortProperty) {
+    final Sort sort = Sort.by(Direction.fromString(sortDirection), sortProperty);
+    return productService.getProducts(PageRequest.of(pageIndex, pageSize, sort));
   }
 
   @GetMapping("/{productId}")
@@ -53,9 +58,10 @@ final class ProductController {
   }
 
   @PutMapping("/{productId}")
-  public Mono<ResponseEntity<Product>> updateProduct(@RequestBody final ProductCoreData productCoreData, @PathVariable final String productId) {
-    return productService.updateProduct(productId, productCoreData).map(updatedProduct -> ResponseEntity.ok(updatedProduct))
-        .defaultIfEmpty(ResponseEntity.notFound().build());
+  public Mono<ResponseEntity<Product>> updateProduct(@RequestBody final ProductCoreData productCoreData,
+      @PathVariable final String productId) {
+    return productService.updateProduct(productId, productCoreData)
+        .map(updatedProduct -> ResponseEntity.ok(updatedProduct)).defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{productId}")
