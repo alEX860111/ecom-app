@@ -1,4 +1,4 @@
-package net.brainified.domain;
+package net.brainified.domain.products;
 
 import java.time.LocalDateTime;
 

@@ -1,10 +1,11 @@
-package net.brainified.domain;
+package net.brainified.domain.authentication;
 
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import net.brainified.db.UserDetailsDocument;
 import net.brainified.db.UserDetailsRepository;
 import reactor.core.publisher.Mono;
 
@@ -19,10 +20,15 @@ final class UserDetailsService implements ReactiveUserDetailsService {
 
   @Override
   public Mono<UserDetails> findByUsername(final String username) {
-    return repository.findByUsername(username).map(userDetailsDocument -> {
-      return User.builder().username(userDetailsDocument.getUsername()).password(userDetailsDocument.getPasswordHash())
-          .roles(userDetailsDocument.getRole()).build();
-    });
+    return repository.findByUsername(username).map(this::createUserDetails);
+  }
+
+  private UserDetails createUserDetails(final UserDetailsDocument document) {
+    return User.builder()
+        .username(document.getUsername())
+        .password(document.getPasswordHash())
+        .roles(document.getRole())
+        .build();
   }
 
 }

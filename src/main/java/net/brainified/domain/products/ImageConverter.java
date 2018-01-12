@@ -1,4 +1,4 @@
-package net.brainified.domain;
+package net.brainified.domain.products;
 
 import net.brainified.db.ImageDocument;
 

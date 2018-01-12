@@ -1,10 +1,10 @@
-package net.brainified.domain;
+package net.brainified.domain.authentication;
 
-public final class UserCreationData {
+public final class AuthenticationRequest {
 
-  public String username;
+  private String username;
 
-  public String password;
+  private String password;
 
   public String getUsername() {
     return username;

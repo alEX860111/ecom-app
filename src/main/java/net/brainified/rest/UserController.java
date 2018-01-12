@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import net.brainified.domain.User;
-import net.brainified.domain.UserCreationData;
-import net.brainified.domain.UserService;
+import net.brainified.domain.authentication.AuthenticationRequest;
+import net.brainified.domain.authentication.User;
+import net.brainified.domain.authentication.UserService;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -25,7 +25,7 @@ final class UserController {
   }
 
   @PostMapping
-  public Mono<ResponseEntity<User>> addProduct(@RequestBody final UserCreationData userCreationData,
+  public Mono<ResponseEntity<User>> addUser(@RequestBody final AuthenticationRequest userCreationData,
       final UriComponentsBuilder uriComponentBuilder) {
     return userService.addUser(userCreationData).map(savedUser -> {
       final URI location = URI.create(uriComponentBuilder.path("/").path(savedUser.getId()).toUriString());

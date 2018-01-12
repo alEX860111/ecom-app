@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import net.brainified.domain.Product;
-import net.brainified.domain.ProductCoreData;
-import net.brainified.domain.ProductService;
+import net.brainified.domain.products.Product;
+import net.brainified.domain.products.ProductCoreData;
+import net.brainified.domain.products.ProductService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

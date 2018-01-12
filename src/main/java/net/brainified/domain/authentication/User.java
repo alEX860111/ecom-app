@@ -1,8 +1,8 @@
-package net.brainified.domain;
+package net.brainified.domain.authentication;
 
 import java.time.LocalDateTime;
 
-public class User {
+public final class User {
 
   private String id;
 

@@ -1,7 +1,9 @@
-package net.brainified.domain;
+package net.brainified.domain.products;
 
 import org.springframework.data.domain.Pageable;
 
+import net.brainified.domain.products.Product;
+import net.brainified.domain.products.ProductCoreData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
