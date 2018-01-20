@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import net.brainified.domain.authentication.AuthenticationData;
+import net.brainified.domain.authentication.LoginData;
 import net.brainified.domain.authentication.User;
 import net.brainified.domain.authentication.UserService;
 import reactor.core.publisher.Mono;
@@ -25,12 +25,12 @@ final class UserController {
   }
 
   @PostMapping
-  public Mono<ResponseEntity<User>> addUser(@RequestBody final AuthenticationData userCreationData,
-      final UriComponentsBuilder uriComponentBuilder) {
-    return userService.addUser(userCreationData).map(savedUser -> {
-      final URI location = URI.create(uriComponentBuilder.path("/").path(savedUser.getId()).toUriString());
-      return ResponseEntity.created(location).body(savedUser);
-    });
+  public Mono<ResponseEntity<User>> addUser(@RequestBody final LoginData loginData, final UriComponentsBuilder uriComponentBuilder) {
+    return userService.addUser(loginData)
+        .map(savedUser -> {
+          final URI location = URI.create(uriComponentBuilder.path("/").path(savedUser.getId()).toUriString());
+          return ResponseEntity.created(location).body(savedUser);
+        });
   }
 
 }

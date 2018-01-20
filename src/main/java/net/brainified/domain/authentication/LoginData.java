@@ -1,6 +1,6 @@
 package net.brainified.domain.authentication;
 
-public final class AuthenticationData {
+public final class LoginData {
 
   private String username;
 

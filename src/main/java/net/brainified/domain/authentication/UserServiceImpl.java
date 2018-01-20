@@ -22,15 +22,15 @@ final class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Mono<User> addUser(final AuthenticationData credentials) {
-    final UserDetailsDocument document = createDocument(credentials);
+  public Mono<User> addUser(final LoginData loginData) {
+    final UserDetailsDocument document = createDocument(loginData);
     return repository.save(document).map(this::createUser);
   }
 
-  private UserDetailsDocument createDocument(final AuthenticationData credentials) {
+  private UserDetailsDocument createDocument(final LoginData loginData) {
     final UserDetailsDocument document = new UserDetailsDocument();
-    document.setUsername(credentials.getUsername());
-    document.setPasswordHash(passwordEncoder.encode(credentials.getPassword()));
+    document.setUsername(loginData.getUsername());
+    document.setPasswordHash(passwordEncoder.encode(loginData.getPassword()));
     document.setRole(DEFAULT_ROLE);
     return document;
   }

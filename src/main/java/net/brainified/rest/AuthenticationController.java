@@ -8,25 +8,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.brainified.domain.authentication.AuthenticationData;
-import net.brainified.domain.authentication.AuthenticationResult;
-import net.brainified.domain.authentication.AuthenticationService;
+import net.brainified.domain.authentication.AuthenticationToken;
+import net.brainified.domain.authentication.AuthenticationTokenService;
+import net.brainified.domain.authentication.LoginData;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/login")
 final class AuthenticationController {
 
-  private final AuthenticationService authenticationService;
+  private final AuthenticationTokenService authenticationTokenService;
 
-  public AuthenticationController(final AuthenticationService authenticationService) {
-    this.authenticationService = authenticationService;
+  public AuthenticationController(final AuthenticationTokenService authenticationTokenService) {
+    this.authenticationTokenService = authenticationTokenService;
   }
 
   @PostMapping
-  public Mono<ResponseEntity<AuthenticationResult>> addUser(@RequestBody final AuthenticationData credentials) {
-    return authenticationService.authenticate(credentials).map(result -> ResponseEntity.ok(result))
-        .onErrorReturn(AuthenticationException.class, ResponseEntity.status(HttpStatus.FORBIDDEN).build());
+  public Mono<ResponseEntity<AuthenticationToken>> addUser(@RequestBody final LoginData loginData) {
+    return authenticationTokenService.createToken(loginData)
+        .map(result -> ResponseEntity.ok(result))
+        .onErrorReturn(AuthenticationException.class, ResponseEntity.status(HttpStatus.FORBIDDEN).build())
+        .defaultIfEmpty(ResponseEntity.status(HttpStatus.FORBIDDEN).build());
   }
 
 }

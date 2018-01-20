@@ -1,10 +1,10 @@
 package net.brainified.domain.authentication;
 
-public final class AuthenticationResult {
+public final class AuthenticationToken {
 
   private final String token;
 
-  public AuthenticationResult(final String token) {
+  public AuthenticationToken(final String token) {
     this.token = token;
   }
 

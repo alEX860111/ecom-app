@@ -18,25 +18,26 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import reactor.core.publisher.Mono;
 
 @Service
-final class AuthenticationServiceImpl implements AuthenticationService {
+final class JWTAuthenticationTokenService implements AuthenticationTokenService {
 
   private final ReactiveAuthenticationManager authenticationManager;
 
-  public AuthenticationServiceImpl(final ReactiveAuthenticationManager authenticationManager) {
+  public JWTAuthenticationTokenService(final ReactiveAuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
   }
 
   @Override
-  public Mono<AuthenticationResult> authenticate(final AuthenticationData authenticationData) {
+  public Mono<AuthenticationToken> createToken(final LoginData loginData) {
     final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-        authenticationData.getUsername(), authenticationData.getPassword());
+        loginData.getUsername(),
+        loginData.getPassword());
 
     return authenticationManager.authenticate(authenticationToken)
         .doOnSuccess(auth -> SecurityContextHolder.getContext().setAuthentication(auth))
         .map(this::createAuthenticationResult);
   }
 
-  private AuthenticationResult createAuthenticationResult(final Authentication authentication) {
+  private AuthenticationToken createAuthenticationResult(final Authentication authentication) {
     try {
       final Algorithm algorithm = Algorithm.HMAC256("secret");
 
@@ -47,7 +48,7 @@ final class AuthenticationServiceImpl implements AuthenticationService {
           .withArrayClaim("role", getRoles(authentication))
           .sign(algorithm);
 
-      return new AuthenticationResult(token);
+      return new AuthenticationToken(token);
     } catch (final UnsupportedEncodingException exception) {
       // UTF-8 encoding not supported
     } catch (final JWTCreationException exception) {

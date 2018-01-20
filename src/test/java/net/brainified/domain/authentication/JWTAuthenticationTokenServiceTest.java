@@ -26,7 +26,7 @@ import net.brainified.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
-class AuthenticationServiceImplTest {
+class JWTAuthenticationTokenServiceTest {
 
   private static final String ROLE = "ADMIN";
 
@@ -36,20 +36,20 @@ class AuthenticationServiceImplTest {
   private ReactiveAuthenticationManager authenticationManager;
 
   @InjectMocks
-  private AuthenticationServiceImpl service;
+  private JWTAuthenticationTokenService service;
 
-  private AuthenticationData authenticationData;
+  private LoginData loginData;
 
   @Mock
   private Authentication authentication;
 
   @BeforeEach
   public void setUp() {
-    authenticationData = new AuthenticationData();
+    loginData = new LoginData();
   }
 
   @Test
-  void authenticate(@Mock final GrantedAuthority grantedAuthority) {
+  void createToken(@Mock final GrantedAuthority grantedAuthority) {
     when(grantedAuthority.getAuthority()).thenReturn(ROLE);
     doReturn(Arrays.asList(grantedAuthority)).when(authentication).getAuthorities();
 
@@ -57,9 +57,9 @@ class AuthenticationServiceImplTest {
 
     when(authenticationManager.authenticate(any())).thenReturn(Mono.just(authentication));
 
-    final AuthenticationResult authenticationResult = service.authenticate(authenticationData).block();
+    final AuthenticationToken authenticationToken = service.createToken(loginData).block();
 
-    final String token = authenticationResult.getToken();
+    final String token = authenticationToken.getToken();
     final DecodedJWT jwt = JWT.decode(token);
 
     assertEquals("net.brainified", jwt.getIssuer());
@@ -69,10 +69,10 @@ class AuthenticationServiceImplTest {
   }
 
   @Test()
-  void authenticate_BadCredentials() {
+  void createToken_BadCredentials() {
     when(authenticationManager.authenticate(any())).thenReturn(Mono.error(new BadCredentialsException("oops")));
 
-    assertThrows(BadCredentialsException.class, () -> service.authenticate(authenticationData).block());
+    assertThrows(BadCredentialsException.class, () -> service.createToken(loginData).block());
   }
 
 }
