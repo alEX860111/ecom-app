@@ -2,8 +2,8 @@ package net.brainified.domain.authentication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -12,13 +12,13 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -72,22 +72,19 @@ final class AuthenticationManagerImplTest {
 
     when(passwordEncoder.matches("PASSWORD", "ENCODED_PASSWORD")).thenReturn(false);
 
-    final Mono<Authentication> authenticate = authenticationManager.authenticate(authentication);
-
-    authenticate.subscribe(auth -> fail("No Success expected."), Assertions::assertNotNull);
+    assertThrows(BadCredentialsException.class, () -> authenticationManager.authenticate(authentication).block());
 
     verify(userDetailsService).findByUsername(USERNAME);
     verify(passwordEncoder).matches("PASSWORD", "ENCODED_PASSWORD");
   }
 
   @Test
-  void authenticate() {
+  void authenticate(@Mock final GrantedAuthority grantedAuthority) {
     when(authentication.getCredentials()).thenReturn("PASSWORD");
 
     final UserDetails userDetails = Mockito.mock(UserDetails.class);
     when(userDetails.getPassword()).thenReturn("ENCODED_PASSWORD");
 
-    final GrantedAuthority grantedAuthority = Mockito.mock(GrantedAuthority.class);
     when(grantedAuthority.getAuthority()).thenReturn("ADMIN");
 
     doReturn(Arrays.asList(grantedAuthority)).when(userDetails).getAuthorities();
@@ -95,16 +92,14 @@ final class AuthenticationManagerImplTest {
 
     when(passwordEncoder.matches("PASSWORD", "ENCODED_PASSWORD")).thenReturn(true);
 
-    final Mono<Authentication> authenticate = authenticationManager.authenticate(authentication);
+    final Authentication auth = authenticationManager.authenticate(authentication).block();
 
-    authenticate.subscribe(auth -> {
-      assertTrue(auth.isAuthenticated());
-      assertEquals(USERNAME, auth.getName());
-      assertEquals("PASSWORD", auth.getCredentials());
-      assertEquals(1, auth.getAuthorities().size());
-      final Optional<? extends GrantedAuthority> authority = auth.getAuthorities().stream().findFirst();
-      assertEquals("ADMIN", authority.get().getAuthority());
-    }, Assertions::fail);
+    assertTrue(auth.isAuthenticated());
+    assertEquals(USERNAME, auth.getName());
+    assertEquals("PASSWORD", auth.getCredentials());
+    assertEquals(1, auth.getAuthorities().size());
+    final Optional<? extends GrantedAuthority> authority = auth.getAuthorities().stream().findFirst();
+    assertEquals("ADMIN", authority.get().getAuthority());
 
     verify(userDetailsService).findByUsername(USERNAME);
     verify(passwordEncoder).matches("PASSWORD", "ENCODED_PASSWORD");

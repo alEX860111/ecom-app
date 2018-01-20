@@ -4,6 +4,6 @@ import reactor.core.publisher.Mono;
 
 public interface UserService {
 
-  Mono<User> addUser(AuthenticationRequest userCreationData);
+  Mono<User> addUser(AuthenticationData userCreationData);
 
 }

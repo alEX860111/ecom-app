@@ -4,6 +4,6 @@ import reactor.core.publisher.Mono;
 
 public interface AuthenticationService {
 
-  Mono<AuthenticationResult> authenticate(AuthenticationRequest credentials);
+  Mono<AuthenticationResult> authenticate(AuthenticationData credentials);
 
 }
