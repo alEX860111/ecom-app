@@ -15,9 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -33,7 +32,7 @@ class JWTAuthenticationTokenServiceTest {
   private static final String USER = "USER";
 
   @Mock
-  private ReactiveAuthenticationManager authenticationManager;
+  private AuthenticationService authenticationService;
 
   @InjectMocks
   private JWTAuthenticationTokenService service;
@@ -41,7 +40,7 @@ class JWTAuthenticationTokenServiceTest {
   private LoginData loginData;
 
   @Mock
-  private Authentication authentication;
+  private UserDetails userDetails;
 
   @BeforeEach
   public void setUp() {
@@ -51,11 +50,11 @@ class JWTAuthenticationTokenServiceTest {
   @Test
   void createToken(@Mock final GrantedAuthority grantedAuthority) {
     when(grantedAuthority.getAuthority()).thenReturn(ROLE);
-    doReturn(Arrays.asList(grantedAuthority)).when(authentication).getAuthorities();
+    doReturn(Arrays.asList(grantedAuthority)).when(userDetails).getAuthorities();
 
-    when(authentication.getName()).thenReturn(USER);
+    when(userDetails.getUsername()).thenReturn(USER);
 
-    when(authenticationManager.authenticate(any())).thenReturn(Mono.just(authentication));
+    when(authenticationService.authenticate(any())).thenReturn(Mono.just(userDetails));
 
     final AuthenticationToken authenticationToken = service.createToken(loginData).block();
 
@@ -65,12 +64,12 @@ class JWTAuthenticationTokenServiceTest {
     assertEquals("net.brainified", jwt.getIssuer());
     assertNotNull(jwt.getIssuedAt());
     assertEquals(USER, jwt.getSubject());
-    assertEquals(Arrays.asList(ROLE), jwt.getClaim("role").asList(String.class));
+    assertEquals(Arrays.asList(ROLE), jwt.getClaim("roles").asList(String.class));
   }
 
   @Test()
   void createToken_BadCredentials() {
-    when(authenticationManager.authenticate(any())).thenReturn(Mono.error(new BadCredentialsException("oops")));
+    when(authenticationService.authenticate(any())).thenReturn(Mono.error(new BadCredentialsException("oops")));
 
     assertThrows(BadCredentialsException.class, () -> service.createToken(loginData).block());
   }

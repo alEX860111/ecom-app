@@ -4,11 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -20,32 +17,27 @@ import reactor.core.publisher.Mono;
 @Service
 final class JWTAuthenticationTokenService implements AuthenticationTokenService {
 
-  private final ReactiveAuthenticationManager authenticationManager;
+  private final AuthenticationService authenticationService;
 
-  public JWTAuthenticationTokenService(final ReactiveAuthenticationManager authenticationManager) {
-    this.authenticationManager = authenticationManager;
+  public JWTAuthenticationTokenService(final AuthenticationService authenticationService) {
+    this.authenticationService = authenticationService;
   }
 
   @Override
   public Mono<AuthenticationToken> createToken(final LoginData loginData) {
-    final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-        loginData.getUsername(),
-        loginData.getPassword());
-
-    return authenticationManager.authenticate(authenticationToken)
-        .doOnSuccess(auth -> SecurityContextHolder.getContext().setAuthentication(auth))
+    return authenticationService.authenticate(loginData)
         .map(this::createAuthenticationResult);
   }
 
-  private AuthenticationToken createAuthenticationResult(final Authentication authentication) {
+  private AuthenticationToken createAuthenticationResult(final UserDetails userDetails) {
     try {
       final Algorithm algorithm = Algorithm.HMAC256("secret");
 
       final String token = JWT.create()
           .withIssuer("net.brainified")
           .withIssuedAt(Date.valueOf(LocalDate.now()))
-          .withSubject(authentication.getName())
-          .withArrayClaim("role", getRoles(authentication))
+          .withSubject(userDetails.getUsername())
+          .withArrayClaim("roles", getRoles(userDetails))
           .sign(algorithm);
 
       return new AuthenticationToken(token);
@@ -58,8 +50,8 @@ final class JWTAuthenticationTokenService implements AuthenticationTokenService 
 
   }
 
-  private String[] getRoles(final Authentication authentication) {
-    return authentication.getAuthorities()
+  private String[] getRoles(final UserDetails userDetails) {
+    return userDetails.getAuthorities()
         .stream()
         .map(GrantedAuthority::getAuthority)
         .toArray(String[]::new);
