@@ -4,8 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -17,19 +22,34 @@ import reactor.core.publisher.Mono;
 @Service
 final class JWTAuthenticationTokenService implements AuthenticationTokenService {
 
-  private final AuthenticationService authenticationService;
+  private static final Logger LOGGER = LoggerFactory.getLogger(JWTAuthenticationTokenService.class);
 
-  public JWTAuthenticationTokenService(final AuthenticationService authenticationService) {
-    this.authenticationService = authenticationService;
+  private final ReactiveUserDetailsService userDetailsService;
+
+  private final PasswordEncoder passwordEncoder;
+
+  public JWTAuthenticationTokenService(final ReactiveUserDetailsService userDetailsService, final PasswordEncoder passwordEncoder) {
+    this.userDetailsService = userDetailsService;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
   public Mono<AuthenticationToken> createToken(final LoginData loginData) {
-    return authenticationService.authenticate(loginData)
-        .map(this::createAuthenticationResult);
+    return userDetailsService.findByUsername(loginData.getUsername())
+        .doOnNext(userDetails -> this.comparePasswords(loginData, userDetails))
+        .map(this::createAuthenticationToken);
   }
 
-  private AuthenticationToken createAuthenticationResult(final UserDetails userDetails) {
+  private void comparePasswords(final LoginData loginData, final UserDetails userDetails) {
+    final String rawPassword = loginData.getPassword();
+    final String encodedPassword = userDetails.getPassword();
+
+    if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+      throw new BadCredentialsException("Bad Credentials");
+    }
+  }
+
+  private AuthenticationToken createAuthenticationToken(final UserDetails userDetails) {
     try {
       final Algorithm algorithm = Algorithm.HMAC256("secret");
 
@@ -41,12 +61,10 @@ final class JWTAuthenticationTokenService implements AuthenticationTokenService 
           .sign(algorithm);
 
       return new AuthenticationToken(token);
-    } catch (final UnsupportedEncodingException exception) {
-      // UTF-8 encoding not supported
-    } catch (final JWTCreationException exception) {
-      // Invalid Signing configuration / Couldn't convert Claims.
+    } catch (final UnsupportedEncodingException | JWTCreationException exception) {
+      LOGGER.error(exception.getMessage(), exception);
+      throw new RuntimeException(exception);
     }
-    throw new RuntimeException();
 
   }
 
