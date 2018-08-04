@@ -1,6 +1,5 @@
 package net.brainified.domain.authentication;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,26 +20,33 @@ import reactor.core.publisher.Mono;
 
 @Service
 final class JWTAuthenticationManager implements ReactiveAuthenticationManager {
+  
+  private final JWTAlgorithmService jWTAlgorithmService;
+
+  public JWTAuthenticationManager(final JWTAlgorithmService jWTAlgorithmService) {
+    this.jWTAlgorithmService = jWTAlgorithmService;
+  }
 
   @Override
   public Mono<Authentication> authenticate(final Authentication authentication) throws AuthenticationException {
     final String token = (String) authentication.getCredentials();
 
+    final Algorithm algorithm = jWTAlgorithmService.getAlgorithm();
+
+    final JWTVerifier verifier = JWT.require(algorithm)
+        .withIssuer("net.brainified")
+        .build();
+
+    DecodedJWT jwt;
     try {
-      final Algorithm algorithm = Algorithm.HMAC256("secret");
-      final JWTVerifier verifier = JWT.require(algorithm)
-          .withIssuer("net.brainified")
-          .build();
-
-      final DecodedJWT jwt = verifier.verify(token);
-
-      final List<SimpleGrantedAuthority> authorities = jwt.getClaim("roles").asList(SimpleGrantedAuthority.class);
-      return Mono.just(new UsernamePasswordAuthenticationToken(jwt.getSubject(), token, authorities));
-
-    } catch (final UnsupportedEncodingException exception) {
-    } catch (final JWTVerificationException exception) {
+      jwt = verifier.verify(token);
+    } catch (final JWTVerificationException e) {
+      throw new BadCredentialsException("Token could not be verified");
     }
-    throw new BadCredentialsException("Token could not be verified");
+
+    final List<SimpleGrantedAuthority> authorities = jwt.getClaim("roles").asList(SimpleGrantedAuthority.class);
+    return Mono.just(new UsernamePasswordAuthenticationToken(jwt.getSubject(), token, authorities));
+
   }
 
 }

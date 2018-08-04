@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import net.brainified.MockitoExtension;
@@ -44,6 +46,9 @@ class JWTAuthenticationTokenServiceTest {
 
   @Mock
   private PasswordEncoder passwordEncoder;
+  
+  @Mock
+  private JWTAlgorithmService jWTAlgorithmService;
 
   @InjectMocks
   private JWTAuthenticationTokenService service;
@@ -51,10 +56,12 @@ class JWTAuthenticationTokenServiceTest {
   private LoginData loginData;
 
   @BeforeEach
-  public void setUp() {
+  public void setUp() throws UnsupportedEncodingException {
     loginData = new LoginData();
     loginData.setUsername(USER);
     loginData.setPassword(PASSWORD);
+    
+    when(jWTAlgorithmService.getAlgorithm()).thenReturn(Algorithm.HMAC256("xyz"));
   }
 
   @Test

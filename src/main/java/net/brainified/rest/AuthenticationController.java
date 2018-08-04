@@ -24,7 +24,7 @@ final class AuthenticationController {
   }
 
   @PostMapping
-  public Mono<ResponseEntity<AuthenticationToken>> addUser(@RequestBody final LoginData loginData) {
+  public Mono<ResponseEntity<AuthenticationToken>> login(@RequestBody final LoginData loginData) {
     return authenticationTokenService.createToken(loginData)
         .map(result -> ResponseEntity.ok(result))
         .onErrorReturn(AuthenticationException.class, ResponseEntity.status(HttpStatus.FORBIDDEN).build())

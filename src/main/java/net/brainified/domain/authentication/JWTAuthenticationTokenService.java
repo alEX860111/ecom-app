@@ -1,11 +1,8 @@
 package net.brainified.domain.authentication;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -15,22 +12,25 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 
 import reactor.core.publisher.Mono;
 
 @Service
 final class JWTAuthenticationTokenService implements AuthenticationTokenService {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(JWTAuthenticationTokenService.class);
-
   private final ReactiveUserDetailsService userDetailsService;
 
   private final PasswordEncoder passwordEncoder;
 
-  public JWTAuthenticationTokenService(final ReactiveUserDetailsService userDetailsService, final PasswordEncoder passwordEncoder) {
+  private final JWTAlgorithmService jWTAlgorithmService;
+
+  public JWTAuthenticationTokenService(
+      final ReactiveUserDetailsService userDetailsService,
+      final PasswordEncoder passwordEncoder,
+      final JWTAlgorithmService jWTAlgorithmService) {
     this.userDetailsService = userDetailsService;
     this.passwordEncoder = passwordEncoder;
+    this.jWTAlgorithmService = jWTAlgorithmService;
   }
 
   @Override
@@ -50,22 +50,16 @@ final class JWTAuthenticationTokenService implements AuthenticationTokenService 
   }
 
   private AuthenticationToken createAuthenticationToken(final UserDetails userDetails) {
-    try {
-      final Algorithm algorithm = Algorithm.HMAC256("secret");
+    final Algorithm algorithm = jWTAlgorithmService.getAlgorithm();
 
-      final String token = JWT.create()
-          .withIssuer("net.brainified")
-          .withIssuedAt(Date.valueOf(LocalDate.now()))
-          .withSubject(userDetails.getUsername())
-          .withArrayClaim("roles", getRoles(userDetails))
-          .sign(algorithm);
+    final String token = JWT.create()
+        .withIssuer("net.brainified")
+        .withIssuedAt(Date.valueOf(LocalDate.now()))
+        .withSubject(userDetails.getUsername())
+        .withArrayClaim("roles", getRoles(userDetails))
+        .sign(algorithm);
 
-      return new AuthenticationToken(token);
-    } catch (final UnsupportedEncodingException | JWTCreationException exception) {
-      LOGGER.error(exception.getMessage(), exception);
-      throw new RuntimeException(exception);
-    }
-
+    return new AuthenticationToken(token);
   }
 
   private String[] getRoles(final UserDetails userDetails) {
