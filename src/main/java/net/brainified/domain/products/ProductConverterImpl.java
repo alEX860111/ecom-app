@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.brainified.db.ProductDocument;
-import net.brainified.domain.products.Product;
 
 @Service
 final class ProductConverterImpl implements ProductConverter {
@@ -17,17 +16,18 @@ final class ProductConverterImpl implements ProductConverter {
   }
 
   @Override
-  public ProductDocument updateProductDocument(final ProductDocument productDocument,
-      final ProductCoreData productCoreData) {
-    productDocument.setName(productCoreData.getName());
-    productDocument.setPrice(productCoreData.getPrice());
-    productDocument.setImage(imageConverter.convertImageToImageDocument(productCoreData.getImage()));
+  public ProductDocument updateProductDocument(
+      final ProductDocument productDocument,
+      final ProductAttributes productAttributes) {
+    productDocument.setName(productAttributes.getName());
+    productDocument.setPrice(productAttributes.getPrice());
+    productDocument.setImage(imageConverter.convertImageToImageDocument(productAttributes.getImage()));
     return productDocument;
   }
 
   @Override
-  public ProductDocument createProductDocument(final ProductCoreData productCoreData) {
-    return updateProductDocument(new ProductDocument(), productCoreData);
+  public ProductDocument createProductDocument(final ProductAttributes productAttributes) {
+    return updateProductDocument(new ProductDocument(), productAttributes);
   }
 
   @Override
@@ -37,9 +37,12 @@ final class ProductConverterImpl implements ProductConverter {
     product.setId(productDocument.getId());
     product.setCreatedAt(productDocument.getCreatedAt());
 
-    product.setName(productDocument.getName());
-    product.setPrice(productDocument.getPrice());
-    product.setImage(imageConverter.convertImageDocumentToImage(productDocument.getImage()));
+    final ProductAttributes productAttributes = new ProductAttributes();
+    productAttributes.setName(productDocument.getName());
+    productAttributes.setPrice(productDocument.getPrice());
+    productAttributes.setImage(imageConverter.convertImageDocumentToImage(productDocument.getImage()));
+
+    product.setAttributes(productAttributes);
 
     return product;
   }

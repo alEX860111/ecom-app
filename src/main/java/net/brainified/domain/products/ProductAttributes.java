@@ -1,6 +1,6 @@
 package net.brainified.domain.products;
 
-public class ProductCoreData {
+public final class ProductAttributes {
 
   private String name;
 

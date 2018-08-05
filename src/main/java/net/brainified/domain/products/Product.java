@@ -2,11 +2,13 @@ package net.brainified.domain.products;
 
 import java.time.LocalDateTime;
 
-public final class Product extends ProductCoreData {
+public final class Product {
 
   private String id;
 
   private LocalDateTime createdAt;
+
+  private ProductAttributes attributes;
 
   public String getId() {
     return id;
@@ -22,6 +24,14 @@ public final class Product extends ProductCoreData {
 
   public void setCreatedAt(final LocalDateTime createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public ProductAttributes getAttributes() {
+    return attributes;
+  }
+
+  public void setAttributes(final ProductAttributes attributes) {
+    this.attributes = attributes;
   }
 
 }

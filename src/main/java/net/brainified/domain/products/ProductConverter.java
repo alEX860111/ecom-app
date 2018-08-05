@@ -1,13 +1,12 @@
 package net.brainified.domain.products;
 
 import net.brainified.db.ProductDocument;
-import net.brainified.domain.products.Product;
 
 interface ProductConverter {
 
-  ProductDocument updateProductDocument(ProductDocument productDocument, ProductCoreData productCoreData);
+  ProductDocument updateProductDocument(ProductDocument productDocument, ProductAttributes productAttributes);
 
-  ProductDocument createProductDocument(ProductCoreData productCoreData);
+  ProductDocument createProductDocument(ProductAttributes productAttributes);
 
   Product createProduct(ProductDocument productDocument);
 

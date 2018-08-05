@@ -5,9 +5,6 @@ import org.springframework.stereotype.Service;
 
 import net.brainified.db.ProductDocument;
 import net.brainified.db.ProductRepository;
-import net.brainified.domain.products.Product;
-import net.brainified.domain.products.ProductCoreData;
-import net.brainified.domain.products.ProductService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,8 +21,8 @@ final class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Mono<Product> addProduct(final ProductCoreData productCoreData) {
-    final ProductDocument productDocument = productConverter.createProductDocument(productCoreData);
+  public Mono<Product> addProduct(final ProductAttributes productAttributes) {
+    final ProductDocument productDocument = productConverter.createProductDocument(productAttributes);
     return productRepository.save(productDocument).map(productConverter::createProduct);
   }
 
@@ -40,9 +37,9 @@ final class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Mono<Product> updateProduct(final String productId, final ProductCoreData productCoreData) {
+  public Mono<Product> updateProduct(final String productId, final ProductAttributes productAttributes) {
     return productRepository.findById(productId).flatMap(document -> {
-      final ProductDocument updatedDocument = productConverter.updateProductDocument(document, productCoreData);
+      final ProductDocument updatedDocument = productConverter.updateProductDocument(document, productAttributes);
       return productRepository.save(updatedDocument).map(productConverter::createProduct);
     });
   }
