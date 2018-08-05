@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.rest.authentication;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,8 @@ class AuthenticationWebFilterConfiguration {
 
   private final JWTAuthenticationConverter authenticationConverter;
 
-  public AuthenticationWebFilterConfiguration(final ReactiveAuthenticationManager reactiveAuthenticationManager,
+  public AuthenticationWebFilterConfiguration(
+      final ReactiveAuthenticationManager reactiveAuthenticationManager,
       final JWTAuthenticationConverter authenticationConverter) {
     this.reactiveAuthenticationManager = reactiveAuthenticationManager;
     this.authenticationConverter = authenticationConverter;
@@ -20,9 +21,9 @@ class AuthenticationWebFilterConfiguration {
 
   @Bean
   public AuthenticationWebFilter createAuthenticationWebFilter() {
-    final AuthenticationWebFilter authenticationWebFilter = new AuthenticationWebFilter(reactiveAuthenticationManager);
-    authenticationWebFilter.setAuthenticationConverter(authenticationConverter);
-    return authenticationWebFilter;
+    final AuthenticationWebFilter filter = new AuthenticationWebFilter(reactiveAuthenticationManager);
+    filter.setAuthenticationConverter(authenticationConverter);
+    return filter;
   }
 
 }

@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.rest.authentication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -28,6 +28,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import net.brainified.MockitoExtension;
+import net.brainified.rest.authentication.AuthenticationToken;
+import net.brainified.rest.authentication.JWTAlgorithmService;
+import net.brainified.rest.authentication.JWTAuthenticationTokenService;
+import net.brainified.rest.authentication.LoginData;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)

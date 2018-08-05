@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.rest.authentication;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;

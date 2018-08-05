@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.rest.authentication;
 
 import com.auth0.jwt.algorithms.Algorithm;
 

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.brainified.domain.authentication.AuthenticationToken;
-import net.brainified.domain.authentication.AuthenticationTokenService;
-import net.brainified.domain.authentication.LoginData;
+import net.brainified.rest.authentication.AuthenticationToken;
+import net.brainified.rest.authentication.AuthenticationTokenService;
+import net.brainified.rest.authentication.LoginData;
 import reactor.core.publisher.Mono;
 
 @RestController

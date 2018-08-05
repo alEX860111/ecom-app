@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.rest.authentication;
 
 import java.util.Objects;
 import java.util.function.Function;

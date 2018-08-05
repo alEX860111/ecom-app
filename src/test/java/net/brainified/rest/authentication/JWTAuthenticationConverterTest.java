@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.rest.authentication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.server.ServerWebExchange;
 
 import net.brainified.MockitoExtension;
+import net.brainified.rest.authentication.JWTAuthenticationConverter;
 
 @ExtendWith(MockitoExtension.class)
 class JWTAuthenticationConverterTest {

@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.rest.authentication;
 
 import java.util.Collection;
 
@@ -45,7 +45,7 @@ final class JWTAuthentication implements Authentication {
 
   @Override
   public boolean isAuthenticated() {
-    return false;
+    throw new UnsupportedOperationException();
   }
 
   @Override
