@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.domain.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -30,13 +30,13 @@ class UserConverterImplTest {
 
   @Test
   void createDocument() {
-    final LoginData loginData = new LoginData();
-    loginData.setUsername("username");
-    loginData.setPassword("password");
+    final AddUserRequest addUserRequest = new AddUserRequest();
+    addUserRequest.setUsername("username");
+    addUserRequest.setPassword("password");
 
     when(passwordEncoder.encode("password")).thenReturn("passwordHash");
 
-    final UserDetailsDocument document = converter.createDocument(loginData);
+    final UserDetailsDocument document = converter.createDocument(addUserRequest);
 
     assertEquals("username", document.getUsername());
     assertEquals("passwordHash", document.getPasswordHash());

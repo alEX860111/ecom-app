@@ -1,9 +1,9 @@
-package net.brainified.domain.authentication;
+package net.brainified.domain.user;
 
 public class DuplicateUsernameException extends RuntimeException {
 
   public DuplicateUsernameException(final String username) {
-    super(String.format("username '%s' does already exist", username));
+    super(String.format("username '%s' already exists", username));
   }
 
   private static final long serialVersionUID = 1L;

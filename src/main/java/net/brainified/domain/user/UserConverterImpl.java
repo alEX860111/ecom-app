@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.domain.user;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,10 +17,10 @@ final class UserConverterImpl implements UserConverter {
   }
 
   @Override
-  public UserDetailsDocument createDocument(final LoginData loginData) {
+  public UserDetailsDocument createDocument(final AddUserRequest addUserRequest) {
     final UserDetailsDocument document = new UserDetailsDocument();
-    document.setUsername(loginData.getUsername());
-    document.setPasswordHash(passwordEncoder.encode(loginData.getPassword()));
+    document.setUsername(addUserRequest.getUsername());
+    document.setPasswordHash(passwordEncoder.encode(addUserRequest.getPassword()));
     document.setRole(DEFAULT_ROLE);
     return document;
   }

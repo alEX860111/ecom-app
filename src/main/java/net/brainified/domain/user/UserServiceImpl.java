@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.domain.user;
 
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -20,11 +20,11 @@ final class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Mono<User> addUser(final LoginData loginData) {
-    final UserDetailsDocument document = userConverter.createDocument(loginData);
+  public Mono<User> addUser(final AddUserRequest addUserRequest) {
+    final UserDetailsDocument document = userConverter.createDocument(addUserRequest);
     return repository.save(document)
         .map(userConverter::createUser)
-        .onErrorMap(DuplicateKeyException.class, e -> new DuplicateUsernameException(loginData.getUsername()));
+        .onErrorMap(DuplicateKeyException.class, e -> new DuplicateUsernameException(addUserRequest.getUsername()));
   }
 
 }

@@ -1,4 +1,4 @@
-package net.brainified.domain.authentication;
+package net.brainified.domain.user;
 
 import java.time.LocalDateTime;
 

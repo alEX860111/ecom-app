@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import net.brainified.domain.authentication.DuplicateUsernameException;
-import net.brainified.domain.authentication.LoginData;
-import net.brainified.domain.authentication.User;
-import net.brainified.domain.authentication.UserService;
+import net.brainified.domain.user.AddUserRequest;
+import net.brainified.domain.user.DuplicateUsernameException;
+import net.brainified.domain.user.User;
+import net.brainified.domain.user.UserService;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -27,8 +27,8 @@ final class UserController {
   }
 
   @PostMapping
-  public Mono<ResponseEntity<User>> addUser(@RequestBody final LoginData loginData, final UriComponentsBuilder uriComponentBuilder) {
-    return userService.addUser(loginData)
+  public Mono<ResponseEntity<User>> addUser(@RequestBody final AddUserRequest addUserRequest, final UriComponentsBuilder uriComponentBuilder) {
+    return userService.addUser(addUserRequest)
         .map(savedUser -> {
           final URI location = URI.create(uriComponentBuilder.path("/").path(savedUser.getId()).toUriString());
           return ResponseEntity.created(location).body(savedUser);

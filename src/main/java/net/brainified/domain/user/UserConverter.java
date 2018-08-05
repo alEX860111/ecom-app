@@ -1,10 +1,10 @@
-package net.brainified.domain.authentication;
+package net.brainified.domain.user;
 
 import net.brainified.db.UserDetailsDocument;
 
 interface UserConverter {
 
-  UserDetailsDocument createDocument(LoginData loginData);
+  UserDetailsDocument createDocument(AddUserRequest addUserRequest);
 
   User createUser(UserDetailsDocument savedDocument);
 
