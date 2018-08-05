@@ -2,6 +2,8 @@ package net.brainified.rest;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -35,7 +37,7 @@ final class ProductController {
 
   @PostMapping
   public Mono<ResponseEntity<Product>> addProduct(
-      @RequestBody final ProductAttributes productAttributes,
+      @RequestBody @Valid final ProductAttributes productAttributes,
       final UriComponentsBuilder uriComponentBuilder) {
     return productService.addProduct(productAttributes)
         .map(savedProduct -> {
@@ -62,7 +64,7 @@ final class ProductController {
   }
 
   @PutMapping("/{productId}")
-  public Mono<ResponseEntity<Product>> updateProduct(@RequestBody final ProductAttributes productAttributes,
+  public Mono<ResponseEntity<Product>> updateProduct(@RequestBody @Valid final ProductAttributes productAttributes,
       @PathVariable final String productId) {
     return productService.updateProduct(productId, productAttributes)
         .map(updatedProduct -> ResponseEntity.ok(updatedProduct))
