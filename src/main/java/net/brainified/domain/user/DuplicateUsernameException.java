@@ -1,6 +1,6 @@
 package net.brainified.domain.user;
 
-public class DuplicateUsernameException extends RuntimeException {
+public final class DuplicateUsernameException extends RuntimeException {
 
   public DuplicateUsernameException(final String username) {
     super(String.format("username '%s' already exists", username));
