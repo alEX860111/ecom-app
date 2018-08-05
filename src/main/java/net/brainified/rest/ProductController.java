@@ -34,26 +34,30 @@ final class ProductController {
   }
 
   @PostMapping
-  public Mono<ResponseEntity<Product>> addProduct(@RequestBody final ProductCoreData productCoreData,
+  public Mono<ResponseEntity<Product>> addProduct(
+      @RequestBody final ProductCoreData productCoreData,
       final UriComponentsBuilder uriComponentBuilder) {
-    return productService.addProduct(productCoreData).map(savedProduct -> {
-      final URI location = URI.create(uriComponentBuilder.path("/").path(savedProduct.getId()).toUriString());
-      return ResponseEntity.created(location).body(savedProduct);
-    });
+    return productService.addProduct(productCoreData)
+        .map(savedProduct -> {
+          final URI location = URI.create(uriComponentBuilder.path("/").path(savedProduct.getId()).toUriString());
+          return ResponseEntity.created(location).body(savedProduct);
+        });
   }
 
   @GetMapping
-  public Flux<Product> getProducts(@RequestParam(name = "page-index", defaultValue = "0") final int pageIndex,
+  public Flux<Product> getProducts(
+      @RequestParam(name = "page-index", defaultValue = "0") final int pageIndex,
       @RequestParam(name = "page-size", defaultValue = "10") final int pageSize,
       @RequestParam(name = "sort-direction", defaultValue = "desc") final String sortDirection,
-      @RequestParam(name = "sort-property", defaultValue="createdAt") final String sortProperty) {
+      @RequestParam(name = "sort-property", defaultValue = "createdAt") final String sortProperty) {
     final Sort sort = Sort.by(Direction.fromString(sortDirection), sortProperty);
     return productService.getProducts(PageRequest.of(pageIndex, pageSize, sort));
   }
 
   @GetMapping("/{productId}")
   public Mono<ResponseEntity<Product>> getProduct(@PathVariable final String productId) {
-    return productService.getProduct(productId).map(product -> ResponseEntity.ok(product))
+    return productService.getProduct(productId)
+        .map(product -> ResponseEntity.ok(product))
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
@@ -61,12 +65,14 @@ final class ProductController {
   public Mono<ResponseEntity<Product>> updateProduct(@RequestBody final ProductCoreData productCoreData,
       @PathVariable final String productId) {
     return productService.updateProduct(productId, productCoreData)
-        .map(updatedProduct -> ResponseEntity.ok(updatedProduct)).defaultIfEmpty(ResponseEntity.notFound().build());
+        .map(updatedProduct -> ResponseEntity.ok(updatedProduct))
+        .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{productId}")
   public Mono<ResponseEntity<Product>> deleteProduct(@PathVariable final String productId) {
-    return productService.deleteProduct(productId).map(deletedProduct -> ResponseEntity.ok(deletedProduct))
+    return productService.deleteProduct(productId)
+        .map(deletedProduct -> ResponseEntity.ok(deletedProduct))
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
