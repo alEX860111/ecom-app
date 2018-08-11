@@ -1,4 +1,4 @@
-package net.brainified.rest;
+package net.brainified.rest.user;
 
 import java.net.URI;
 
