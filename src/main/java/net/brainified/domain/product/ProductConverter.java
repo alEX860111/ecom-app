@@ -1,4 +1,4 @@
-package net.brainified.domain.products;
+package net.brainified.domain.product;
 
 import net.brainified.db.ProductDocument;
 

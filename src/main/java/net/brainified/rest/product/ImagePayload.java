@@ -1,6 +1,6 @@
-package net.brainified.domain.products;
+package net.brainified.rest.product;
 
-public final class Image {
+public final class ImagePayload {
 
   private String title;
 

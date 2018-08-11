@@ -30,7 +30,11 @@ final class UserController {
   public Mono<ResponseEntity<User>> addUser(@RequestBody final AddUserRequest addUserRequest, final UriComponentsBuilder uriComponentBuilder) {
     return userService.addUser(addUserRequest)
         .map(savedUser -> {
-          final URI location = URI.create(uriComponentBuilder.path("/").path(savedUser.getId()).toUriString());
+          final URI location = uriComponentBuilder
+              .path("/users/")
+              .path(savedUser.getId())
+              .build()
+              .toUri();
           return ResponseEntity.created(location).body(savedUser);
         })
         .onErrorReturn(DuplicateUsernameException.class, ResponseEntity.status(HttpStatus.BAD_REQUEST).build());

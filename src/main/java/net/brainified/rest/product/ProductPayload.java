@@ -1,14 +1,14 @@
-package net.brainified.domain.products;
+package net.brainified.rest.product;
 
 import java.time.LocalDateTime;
 
-public final class Product {
+public final class ProductPayload {
 
   private String id;
 
   private LocalDateTime createdAt;
 
-  private ProductAttributes attributes;
+  private ProductAttributesPayload attributes;
 
   public String getId() {
     return id;
@@ -26,11 +26,11 @@ public final class Product {
     this.createdAt = createdAt;
   }
 
-  public ProductAttributes getAttributes() {
+  public ProductAttributesPayload getAttributes() {
     return attributes;
   }
 
-  public void setAttributes(final ProductAttributes attributes) {
+  public void setAttributes(final ProductAttributesPayload attributes) {
     this.attributes = attributes;
   }
 
