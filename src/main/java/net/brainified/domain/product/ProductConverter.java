@@ -1,6 +1,6 @@
 package net.brainified.domain.product;
 
-import net.brainified.db.ProductDocument;
+import net.brainified.db.product.ProductDocument;
 
 interface ProductConverter {
 

@@ -1,19 +1,11 @@
 package net.brainified.domain.product;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.brainified.db.ProductDocument;
+import net.brainified.db.product.ProductDocument;
 
 @Service
 final class ProductConverterImpl implements ProductConverter {
-
-  private final ImageConverter imageConverter;
-
-  @Autowired
-  public ProductConverterImpl(final ImageConverter imageConverter) {
-    this.imageConverter = imageConverter;
-  }
 
   @Override
   public ProductDocument updateProductDocument(
@@ -21,7 +13,7 @@ final class ProductConverterImpl implements ProductConverter {
       final ProductAttributes productAttributes) {
     productDocument.setName(productAttributes.getName());
     productDocument.setPrice(productAttributes.getPrice());
-    productDocument.setImage(imageConverter.convertImageToImageDocument(productAttributes.getImage()));
+    productDocument.setImage(productAttributes.getImageId());
     return productDocument;
   }
 
@@ -40,7 +32,7 @@ final class ProductConverterImpl implements ProductConverter {
     final ProductAttributes productAttributes = new ProductAttributes();
     productAttributes.setName(productDocument.getName());
     productAttributes.setPrice(productDocument.getPrice());
-    productAttributes.setImage(imageConverter.convertImageDocumentToImage(productDocument.getImage()));
+    productAttributes.setImageId(productDocument.getImage().toHexString());
 
     product.setAttributes(productAttributes);
 

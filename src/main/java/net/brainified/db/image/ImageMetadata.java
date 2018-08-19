@@ -1,4 +1,4 @@
-package net.brainified.db;
+package net.brainified.db.image;
 
 public final class ImageMetadata {
 

@@ -12,7 +12,7 @@ public final class ProductAttributesPayload {
   private Double price;
 
   @NotNull
-  private ImagePayload image;
+  private String imageId;
 
   public String getName() {
     return name;
@@ -30,12 +30,12 @@ public final class ProductAttributesPayload {
     this.price = price;
   }
 
-  public ImagePayload getImage() {
-    return image;
+  public String getImageId() {
+    return imageId;
   }
 
-  public void setImage(final ImagePayload image) {
-    this.image = image;
+  public void setImageId(final String imageId) {
+    this.imageId = imageId;
   }
 
 }

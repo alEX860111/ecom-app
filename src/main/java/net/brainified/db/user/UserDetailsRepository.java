@@ -1,4 +1,4 @@
-package net.brainified.db;
+package net.brainified.db.user;
 
 import org.springframework.data.repository.reactive.ReactiveSortingRepository;
 

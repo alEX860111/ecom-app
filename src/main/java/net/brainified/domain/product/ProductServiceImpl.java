@@ -3,8 +3,8 @@ package net.brainified.domain.product;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.brainified.db.ProductDocument;
-import net.brainified.db.ProductRepository;
+import net.brainified.db.product.ProductDocument;
+import net.brainified.db.product.ProductRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

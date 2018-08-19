@@ -1,4 +1,4 @@
-package net.brainified.db;
+package net.brainified.db.product;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.reactive.ReactiveSortingRepository;

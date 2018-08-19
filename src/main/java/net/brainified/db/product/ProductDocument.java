@@ -1,7 +1,8 @@
-package net.brainified.db;
+package net.brainified.db.product;
 
 import java.time.LocalDateTime;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,7 +20,7 @@ public final class ProductDocument {
 
   private Double price;
 
-  private ImageDocument image;
+  private ObjectId image;
 
   public String getId() {
     return id;
@@ -53,12 +54,12 @@ public final class ProductDocument {
     this.price = price;
   }
 
-  public ImageDocument getImage() {
+  public ObjectId getImage() {
     return image;
   }
 
-  public void setImage(final ImageDocument image) {
-    this.image = image;
+  public void setImage(final String image) {
+    this.image = new ObjectId(image);
   }
 
 }

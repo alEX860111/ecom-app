@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import net.brainified.MockitoExtension;
-import net.brainified.db.UserDetailsDocument;
+import net.brainified.db.user.UserDetailsDocument;
 
 @ExtendWith(MockitoExtension.class)
 class UserConverterImplTest {

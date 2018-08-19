@@ -6,7 +6,7 @@ public final class ProductAttributes {
 
   private Double price;
 
-  private Image image;
+  private String imageId;
 
   public String getName() {
     return name;
@@ -24,12 +24,12 @@ public final class ProductAttributes {
     this.price = price;
   }
 
-  public Image getImage() {
-    return image;
+  public String getImageId() {
+    return imageId;
   }
 
-  public void setImage(final Image image) {
-    this.image = image;
+  public void setImageId(final String imageId) {
+    this.imageId = imageId;
   }
 
 }

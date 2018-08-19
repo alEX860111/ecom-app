@@ -1,6 +1,6 @@
 package net.brainified.domain.user;
 
-import net.brainified.db.UserDetailsDocument;
+import net.brainified.db.user.UserDetailsDocument;
 
 interface UserConverter {
 

@@ -3,7 +3,7 @@ package net.brainified.domain.user;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import net.brainified.db.UserDetailsDocument;
+import net.brainified.db.user.UserDetailsDocument;
 
 @Service
 final class UserConverterImpl implements UserConverter {

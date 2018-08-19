@@ -4,8 +4,8 @@ import java.io.InputStream;
 
 import org.springframework.stereotype.Service;
 
-import net.brainified.db.ImageDao;
-import net.brainified.db.ImageMetadata;
+import net.brainified.db.image.ImageDao;
+import net.brainified.db.image.ImageMetadata;
 import reactor.core.publisher.Mono;
 
 @Service

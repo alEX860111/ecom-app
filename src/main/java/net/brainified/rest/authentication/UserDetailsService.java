@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import net.brainified.db.UserDetailsDocument;
-import net.brainified.db.UserDetailsRepository;
+import net.brainified.db.user.UserDetailsDocument;
+import net.brainified.db.user.UserDetailsRepository;
 import reactor.core.publisher.Mono;
 
 @Service
