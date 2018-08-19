@@ -1,0 +1,36 @@
+{
+	"variables": [],
+	"info": {
+		"name": "images",
+		"_postman_id": "dd7d6d10-ebc9-e1cc-8b64-109f3c17d120",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST images",
+			"request": {
+				"url": "http://localhost:8080/products",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0ODI4NTU2MzUsInVzZXJuYW1lIjoiam9lIiwicm9sZSI6IkFETUlOIn0=.49UViDiYlM40naR6mUKydIMHfY1QvyiUHri0bfRlw2M=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"my new product\",\n    \"price\": 1099.99\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

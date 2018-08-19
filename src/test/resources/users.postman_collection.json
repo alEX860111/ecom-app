@@ -1,0 +1,78 @@
+{
+	"variables": [],
+	"info": {
+		"name": "users",
+		"_postman_id": "ecb6e5ef-96fd-234a-a019-c81a52dd2aab",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST users",
+			"request": {
+				"url": "http://localhost:8080/users",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0ODI4NTU2MzUsInVzZXJuYW1lIjoiam9lIiwicm9sZSI6IkFETUlOIn0=.49UViDiYlM40naR6mUKydIMHfY1QvyiUHri0bfRlw2M=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"zoe\",\n    \"password\": \"secret\",\n    \"role\": \"USER\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET user",
+			"request": {
+				"url": "http://localhost:8080/users/5862937edae8db0bd588b343",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0ODI4NTU2MzUsInVzZXJuYW1lIjoiam9lIiwicm9sZSI6IkFETUlOIn0=.49UViDiYlM40naR6mUKydIMHfY1QvyiUHri0bfRlw2M=",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PUT users",
+			"request": {
+				"url": "http://localhost:8080/users/597c525cee55c8065b718897",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0ODI4NTU2MzUsInVzZXJuYW1lIjoiam9lIiwicm9sZSI6IkFETUlOIn0=.49UViDiYlM40naR6mUKydIMHfY1QvyiUHri0bfRlw2M=",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"newPassword\": \"topsecret\",\n    \"oldPassword\": \"secret\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

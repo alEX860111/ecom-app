@@ -1,0 +1,149 @@
+{
+	"variables": [],
+	"info": {
+		"name": "products",
+		"_postman_id": "ac87b368-8443-f28d-a3be-4b4a53558f13",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET product",
+			"request": {
+				"url": "http://localhost:8080/products/586395656d426c069d6db51d",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0ODI4NTU2MzUsInVzZXJuYW1lIjoiam9lIiwicm9sZSI6IkFETUlOIn0=.49UViDiYlM40naR6mUKydIMHfY1QvyiUHri0bfRlw2M=",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET products",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/products?page=1&perpage=2&sortkey=createdAt&sortorder=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "perpage",
+							"value": "2",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "sortkey",
+							"value": "createdAt",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "sortorder",
+							"value": "desc",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0ODI4NTU2MzUsInVzZXJuYW1lIjoiam9lIiwicm9sZSI6IkFETUlOIn0=.49UViDiYlM40naR6mUKydIMHfY1QvyiUHri0bfRlw2M=",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST products",
+			"request": {
+				"url": "http://localhost:8080/products",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0ODI4NTU2MzUsInVzZXJuYW1lIjoiam9lIiwicm9sZSI6IkFETUlOIn0=.49UViDiYlM40naR6mUKydIMHfY1QvyiUHri0bfRlw2M=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"my new product\",\n    \"price\": 1099.99\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE product",
+			"request": {
+				"url": "http://localhost:8080/products/597c5205ee55c8065b718896",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0ODI4NTU2MzUsInVzZXJuYW1lIjoiam9lIiwicm9sZSI6IkFETUlOIn0=.49UViDiYlM40naR6mUKydIMHfY1QvyiUHri0bfRlw2M=",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PUT product",
+			"request": {
+				"url": "http://localhost:8080/products/597c5205ee55c8065b718896",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0ODI4NTU2MzUsInVzZXJuYW1lIjoiam9lIiwicm9sZSI6IkFETUlOIn0=.49UViDiYlM40naR6mUKydIMHfY1QvyiUHri0bfRlw2M=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"my new product (really NEW)\",\n    \"price\": 1099.99\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

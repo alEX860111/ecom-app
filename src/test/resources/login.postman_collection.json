@@ -1,0 +1,31 @@
+{
+	"variables": [],
+	"info": {
+		"name": "login",
+		"_postman_id": "012ba5c8-4132-9f9a-619c-978d71c38c87",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST login",
+			"request": {
+				"url": "http://localhost:8080/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"joe\",\n    \"password\": \"secret\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
