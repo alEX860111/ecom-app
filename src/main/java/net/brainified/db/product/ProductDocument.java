@@ -36,9 +36,9 @@ public final class ProductDocument {
 
   public void setCreatedAt(final LocalDateTime createdAt) {
     this.createdAt = createdAt;
-  } 
+  }
 
-  public String getName() { 
+  public String getName() {
     return name;
   }
 
@@ -58,8 +58,8 @@ public final class ProductDocument {
     return image;
   }
 
-  public void setImage(final String image) {
-    this.image = new ObjectId(image);
+  public void setImage(final ObjectId image) {
+    this.image = image;
   }
 
 }

@@ -5,7 +5,7 @@ import org.springframework.data.repository.reactive.ReactiveSortingRepository;
 
 import reactor.core.publisher.Flux;
 
-public interface ProductRepository extends ReactiveSortingRepository<ProductDocument, String> {
+interface ProductRepository extends ReactiveSortingRepository<ProductDocument, String> {
 
   Flux<ProductDocument> findAllBy(Pageable pageable);
 

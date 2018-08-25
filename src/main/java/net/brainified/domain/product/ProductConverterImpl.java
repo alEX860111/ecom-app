@@ -1,5 +1,6 @@
 package net.brainified.domain.product;
 
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import net.brainified.db.product.ProductDocument;
@@ -13,7 +14,7 @@ final class ProductConverterImpl implements ProductConverter {
       final ProductAttributes productAttributes) {
     productDocument.setName(productAttributes.getName());
     productDocument.setPrice(productAttributes.getPrice());
-    productDocument.setImage(productAttributes.getImageId());
+    productDocument.setImage(new ObjectId(productAttributes.getImageId()));
     return productDocument;
   }
 
@@ -32,7 +33,7 @@ final class ProductConverterImpl implements ProductConverter {
     final ProductAttributes productAttributes = new ProductAttributes();
     productAttributes.setName(productDocument.getName());
     productAttributes.setPrice(productDocument.getPrice());
-    productAttributes.setImageId(productDocument.getImage().toHexString());
+    productAttributes.setImageId((productDocument.getImage().toHexString()));
 
     product.setAttributes(productAttributes);
 

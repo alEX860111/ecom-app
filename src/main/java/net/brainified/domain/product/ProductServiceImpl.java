@@ -3,50 +3,50 @@ package net.brainified.domain.product;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import net.brainified.db.product.ProductDao;
 import net.brainified.db.product.ProductDocument;
-import net.brainified.db.product.ProductRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 final class ProductServiceImpl implements ProductService {
 
-  private final ProductRepository productRepository;
+  private final ProductDao productDao;
 
   private final ProductConverter productConverter;
 
-  public ProductServiceImpl(final ProductRepository productRepository, final ProductConverter productConverter) {
-    this.productRepository = productRepository;
+  public ProductServiceImpl(final ProductDao productDao, final ProductConverter productConverter) {
+    this.productDao = productDao;
     this.productConverter = productConverter;
   }
 
   @Override
   public Mono<Product> addProduct(final ProductAttributes productAttributes) {
     final ProductDocument productDocument = productConverter.createProductDocument(productAttributes);
-    return productRepository.save(productDocument).map(productConverter::createProduct);
+    return productDao.save(productDocument).map(productConverter::createProduct);
   }
 
   @Override
   public Flux<Product> getProducts(final Pageable pageable) {
-    return productRepository.findAllBy(pageable).map(productConverter::createProduct);
+    return productDao.findAllBy(pageable).map(productConverter::createProduct);
   }
 
   @Override
   public Mono<Product> getProduct(final String productId) {
-    return productRepository.findById(productId).map(productConverter::createProduct);
+    return productDao.findById(productId).map(productConverter::createProduct);
   }
 
   @Override
   public Mono<Product> updateProduct(final String productId, final ProductAttributes productAttributes) {
-    return productRepository.findById(productId).flatMap(document -> {
+    return productDao.findById(productId).flatMap(document -> {
       final ProductDocument updatedDocument = productConverter.updateProductDocument(document, productAttributes);
-      return productRepository.save(updatedDocument).map(productConverter::createProduct);
+      return productDao.save(updatedDocument).map(productConverter::createProduct);
     });
   }
 
   @Override
   public Mono<Product> deleteProduct(final String productId) {
-    return getProduct(productId).delayUntil(product -> productRepository.deleteById(product.getId()));
+    return getProduct(productId).delayUntil(product -> productDao.deleteById(product.getId()));
   }
 
 }
