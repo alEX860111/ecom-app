@@ -4,9 +4,9 @@ import net.brainified.db.product.ProductDocument;
 
 interface ProductConverter {
 
-  ProductDocument updateProductDocument(ProductDocument productDocument, ProductAttributes productAttributes);
+  ProductDocument updateProductDocument(ProductDocument productDocument, ProductWriteCommand productWriteCommand);
 
-  ProductDocument createProductDocument(ProductAttributes productAttributes);
+  ProductDocument createProductDocument(ProductWriteCommand productWriteCommand);
 
   Product createProduct(ProductDocument productDocument);
 

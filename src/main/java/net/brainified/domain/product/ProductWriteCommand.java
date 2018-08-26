@@ -1,17 +1,11 @@
-package net.brainified.rest.product;
+package net.brainified.domain.product;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+public final class ProductWriteCommand {
 
-public final class ProductAttributesPayload {
-
-  @NotNull
   private String name;
 
-  @Min(0)
   private Double price;
 
-  @NotNull
   private String imageId;
 
   public String getName() {

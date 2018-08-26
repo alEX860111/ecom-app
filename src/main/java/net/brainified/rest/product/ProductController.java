@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import net.brainified.domain.product.ProductAttributes;
 import net.brainified.domain.product.ProductService;
+import net.brainified.domain.product.ProductWriteCommand;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -38,11 +38,12 @@ final class ProductController {
   }
 
   @PostMapping
-  public Mono<ResponseEntity<ProductPayload>> addProduct(
-      @RequestBody @Valid final ProductAttributesPayload productAttributesPayload,
+  public Mono<ResponseEntity<ProductReadPayload>> addProduct(
+      @RequestBody @Valid final ProductWritePayload productWritePayload,
       final UriComponentsBuilder uriComponentBuilder) {
-    final ProductAttributes productAttributes = productPayloadConverter.convert(productAttributesPayload);
-    return productService.addProduct(productAttributes)
+
+    final ProductWriteCommand productWriteCommand = productPayloadConverter.convert(productWritePayload);
+    return productService.addProduct(productWriteCommand)
         .map(productPayloadConverter::convert)
         .map(productPayload -> {
           final URI location = uriComponentBuilder
@@ -55,18 +56,21 @@ final class ProductController {
   }
 
   @GetMapping
-  public Flux<ProductPayload> getProducts(
+  public Flux<ProductReadPayload> getProducts(
       @RequestParam(name = "page-index", defaultValue = "0") final int pageIndex,
       @RequestParam(name = "page-size", defaultValue = "10") final int pageSize,
       @RequestParam(name = "sort-direction", defaultValue = "desc") final String sortDirection,
       @RequestParam(name = "sort-property", defaultValue = "createdAt") final String sortProperty) {
+
     final Sort sort = Sort.by(Direction.fromString(sortDirection), sortProperty);
     return productService.getProducts(PageRequest.of(pageIndex, pageSize, sort))
         .map(productPayloadConverter::convert);
   }
 
   @GetMapping("/{productId}")
-  public Mono<ResponseEntity<ProductPayload>> getProduct(@PathVariable final String productId) {
+  public Mono<ResponseEntity<ProductReadPayload>> getProduct(
+      @PathVariable final String productId) {
+
     return productService.getProduct(productId)
         .map(productPayloadConverter::convert)
         .map(productPayload -> ResponseEntity.ok(productPayload))
@@ -74,17 +78,21 @@ final class ProductController {
   }
 
   @PutMapping("/{productId}")
-  public Mono<ResponseEntity<ProductPayload>> updateProduct(@RequestBody @Valid final ProductAttributesPayload productAttributesPayload,
+  public Mono<ResponseEntity<ProductReadPayload>> updateProduct(
+      @RequestBody @Valid final ProductWritePayload productWritePayload,
       @PathVariable final String productId) {
-    final ProductAttributes productAttributes = productPayloadConverter.convert(productAttributesPayload);
-    return productService.updateProduct(productId, productAttributes)
+
+    final ProductWriteCommand productWriteCommand = productPayloadConverter.convert(productWritePayload);
+    return productService.updateProduct(productId, productWriteCommand)
         .map(productPayloadConverter::convert)
         .map(productPayload -> ResponseEntity.ok(productPayload))
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{productId}")
-  public Mono<ResponseEntity<ProductPayload>> deleteProduct(@PathVariable final String productId) {
+  public Mono<ResponseEntity<ProductReadPayload>> deleteProduct(
+      @PathVariable final String productId) {
+
     return productService.deleteProduct(productId)
         .map(productPayloadConverter::convert)
         .map(productPayload -> ResponseEntity.ok(productPayload))

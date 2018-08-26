@@ -3,35 +3,37 @@ package net.brainified.rest.product;
 import org.springframework.stereotype.Service;
 
 import net.brainified.domain.product.Product;
-import net.brainified.domain.product.ProductAttributes;
+import net.brainified.domain.product.ProductWriteCommand;
+import net.brainified.rest.Link;
 
 @Service
 final class ProductPayloadConverterImpl implements ProductPayloadConverter {
 
   @Override
-  public ProductAttributes convert(final ProductAttributesPayload productAttributesPayload) {
-    final ProductAttributes productAttributes = new ProductAttributes();
-    productAttributes.setName(productAttributesPayload.getName());
-    productAttributes.setPrice(productAttributesPayload.getPrice());
-    productAttributes.setImageId(productAttributesPayload.getImageId());
-    return productAttributes;
+  public ProductWriteCommand convert(final ProductWritePayload productWritePayload) {
+    final ProductWriteCommand productWriteCommand = new ProductWriteCommand();
+    productWriteCommand.setName(productWritePayload.getName());
+    productWriteCommand.setPrice(productWritePayload.getPrice());
+    productWriteCommand.setImageId(productWritePayload.getImage().getId());
+    return productWriteCommand;
   }
 
   @Override
-  public ProductPayload convert(final Product product) {
-    final ProductPayload productPayload = new ProductPayload();
+  public ProductReadPayload convert(final Product product) {
+    final ProductReadPayload productPayload = new ProductReadPayload();
     productPayload.setId(product.getId());
-    productPayload.setCreatedAt(product.getCreatedAt());
-    productPayload.setAttributes(convert(product.getAttributes()));
-    return productPayload;
-  }
+    productPayload.setLink(Link.createSelfLink(""));
 
-  private ProductAttributesPayload convert(final ProductAttributes productAttributes) {
-    final ProductAttributesPayload productAttributesPayload = new ProductAttributesPayload();
-    productAttributesPayload.setName(productAttributes.getName());
-    productAttributesPayload.setPrice(productAttributes.getPrice());
-    productAttributesPayload.setImageId(productAttributes.getImageId());
-    return productAttributesPayload;
+    productPayload.setCreatedAt(product.getCreatedAt());
+    productPayload.setName(product.getName());
+    productPayload.setPrice(product.getPrice());
+
+    final ImageReadReference image = new ImageReadReference();
+    image.setId(product.getImageId());
+    image.setLink(Link.createSelfLink(""));
+    productPayload.setImage(image);
+
+    return productPayload;
   }
 
 }

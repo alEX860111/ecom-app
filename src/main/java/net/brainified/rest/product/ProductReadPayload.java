@@ -1,10 +1,14 @@
-package net.brainified.domain.product;
+package net.brainified.rest.product;
 
 import java.time.LocalDateTime;
 
-public final class Product {
+import net.brainified.rest.Link;
+
+public final class ProductReadPayload {
 
   private String id;
+
+  private Link link;
 
   private LocalDateTime createdAt;
 
@@ -12,7 +16,7 @@ public final class Product {
 
   private Double price;
 
-  private String imageId;
+  private ImageReadReference image;
 
   public String getId() {
     return id;
@@ -22,6 +26,14 @@ public final class Product {
     this.id = id;
   }
 
+  public Link getLink() {
+    return link;
+  }
+
+  public void setLink(final Link link) {
+    this.link = link;
+  }
+
   public LocalDateTime getCreatedAt() {
     return createdAt;
   }
@@ -29,7 +41,7 @@ public final class Product {
   public void setCreatedAt(final LocalDateTime createdAt) {
     this.createdAt = createdAt;
   }
-  
+
   public String getName() {
     return name;
   }
@@ -46,12 +58,12 @@ public final class Product {
     this.price = price;
   }
 
-  public String getImageId() {
-    return imageId;
+  public ImageReadReference getImage() {
+    return image;
   }
 
-  public void setImageId(final String imageId) {
-    this.imageId = imageId;
+  public void setImage(final ImageReadReference image) {
+    this.image = image;
   }
 
 }
