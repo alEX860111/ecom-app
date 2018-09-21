@@ -18,7 +18,7 @@ public final class Link {
   public String getRel() {
     return rel;
   }
-  
+
   public static Link createSelfLink(final String href) {
     return new Link(href, "self");
   }

@@ -11,16 +11,16 @@ final class ProductConverterImpl implements ProductConverter {
   @Override
   public ProductDocument updateProductDocument(
       final ProductDocument productDocument,
-      final ProductWriteCommand productWriteCommand) {
-    productDocument.setName(productWriteCommand.getName());
-    productDocument.setPrice(productWriteCommand.getPrice());
-    productDocument.setImage(new ObjectId(productWriteCommand.getImageId()));
+      final ProductCreationData productCreationData) {
+    productDocument.setName(productCreationData.getName());
+    productDocument.setPrice(productCreationData.getPrice());
+    productDocument.setImage(new ObjectId(productCreationData.getImageId()));
     return productDocument;
   }
 
   @Override
-  public ProductDocument createProductDocument(final ProductWriteCommand productWriteCommand) {
-    return updateProductDocument(new ProductDocument(), productWriteCommand);
+  public ProductDocument createProductDocument(final ProductCreationData productCreationData) {
+    return updateProductDocument(new ProductDocument(), productCreationData);
   }
 
   @Override

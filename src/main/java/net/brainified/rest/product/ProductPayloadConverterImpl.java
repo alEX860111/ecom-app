@@ -3,15 +3,15 @@ package net.brainified.rest.product;
 import org.springframework.stereotype.Service;
 
 import net.brainified.domain.product.Product;
-import net.brainified.domain.product.ProductWriteCommand;
+import net.brainified.domain.product.ProductCreationData;
 import net.brainified.rest.Link;
 
 @Service
 final class ProductPayloadConverterImpl implements ProductPayloadConverter {
 
   @Override
-  public ProductWriteCommand convert(final ProductWritePayload productWritePayload) {
-    final ProductWriteCommand productWriteCommand = new ProductWriteCommand();
+  public ProductCreationData convert(final ProductWritePayload productWritePayload) {
+    final ProductCreationData productWriteCommand = new ProductCreationData();
     productWriteCommand.setName(productWritePayload.getName());
     productWriteCommand.setPrice(productWritePayload.getPrice());
     productWriteCommand.setImageId(productWritePayload.getImage().getId());

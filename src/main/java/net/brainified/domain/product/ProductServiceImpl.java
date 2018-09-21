@@ -21,8 +21,8 @@ final class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Mono<Product> addProduct(final ProductWriteCommand productWriteCommand) {
-    final ProductDocument productDocument = productConverter.createProductDocument(productWriteCommand);
+  public Mono<Product> addProduct(final ProductCreationData productCreationData) {
+    final ProductDocument productDocument = productConverter.createProductDocument(productCreationData);
     return productDao.save(productDocument).map(productConverter::createProduct);
   }
 
@@ -37,9 +37,9 @@ final class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Mono<Product> updateProduct(final String productId, final ProductWriteCommand productWriteCommand) {
+  public Mono<Product> updateProduct(final String productId, final ProductCreationData productCreationData) {
     return productDao.findById(productId).flatMap(document -> {
-      final ProductDocument updatedDocument = productConverter.updateProductDocument(document, productWriteCommand);
+      final ProductDocument updatedDocument = productConverter.updateProductDocument(document, productCreationData);
       return productDao.save(updatedDocument).map(productConverter::createProduct);
     });
   }

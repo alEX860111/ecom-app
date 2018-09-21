@@ -1,11 +1,11 @@
 package net.brainified.rest.product;
 
 import net.brainified.domain.product.Product;
-import net.brainified.domain.product.ProductWriteCommand;
+import net.brainified.domain.product.ProductCreationData;
 
 interface ProductPayloadConverter {
 
-  ProductWriteCommand convert(ProductWritePayload productWritePayload);
+  ProductCreationData convert(ProductWritePayload productWritePayload);
 
   ProductReadPayload convert(Product product);
 

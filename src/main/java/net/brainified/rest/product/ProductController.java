@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import net.brainified.domain.product.ProductService;
-import net.brainified.domain.product.ProductWriteCommand;
+import net.brainified.domain.product.ProductCreationData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -42,7 +42,7 @@ final class ProductController {
       @RequestBody @Valid final ProductWritePayload productWritePayload,
       final UriComponentsBuilder uriComponentBuilder) {
 
-    final ProductWriteCommand productWriteCommand = productPayloadConverter.convert(productWritePayload);
+    final ProductCreationData productWriteCommand = productPayloadConverter.convert(productWritePayload);
     return productService.addProduct(productWriteCommand)
         .map(productPayloadConverter::convert)
         .map(productPayload -> {
@@ -82,7 +82,7 @@ final class ProductController {
       @RequestBody @Valid final ProductWritePayload productWritePayload,
       @PathVariable final String productId) {
 
-    final ProductWriteCommand productWriteCommand = productPayloadConverter.convert(productWritePayload);
+    final ProductCreationData productWriteCommand = productPayloadConverter.convert(productWritePayload);
     return productService.updateProduct(productId, productWriteCommand)
         .map(productPayloadConverter::convert)
         .map(productPayload -> ResponseEntity.ok(productPayload))

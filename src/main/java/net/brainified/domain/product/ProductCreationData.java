@@ -1,6 +1,6 @@
 package net.brainified.domain.product;
 
-public final class ProductWriteCommand {
+public final class ProductCreationData {
 
   private String name;
 
