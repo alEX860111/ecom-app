@@ -44,13 +44,9 @@ final class ProductController {
 
     final ProductCreationData productWriteCommand = productPayloadConverter.convert(payload);
     return productService.addProduct(productWriteCommand)
-        .map(productPayloadConverter::convert)
+        .map(product -> productPayloadConverter.convert(product, uriComponentBuilder))
         .map(productPayload -> {
-          final URI location = uriComponentBuilder
-              .path("/products/")
-              .path(productPayload.getId())
-              .build()
-              .toUri();
+          final URI location = productPayload.getLink().getUri();
           return ResponseEntity.created(location).body(productPayload);
         });
   }
@@ -60,19 +56,21 @@ final class ProductController {
       @RequestParam(name = "page-index", defaultValue = "0") final int pageIndex,
       @RequestParam(name = "page-size", defaultValue = "10") final int pageSize,
       @RequestParam(name = "sort-direction", defaultValue = "desc") final String sortDirection,
-      @RequestParam(name = "sort-property", defaultValue = "createdAt") final String sortProperty) {
+      @RequestParam(name = "sort-property", defaultValue = "createdAt") final String sortProperty,
+      final UriComponentsBuilder uriComponentBuilder) {
 
     final Sort sort = Sort.by(Direction.fromString(sortDirection), sortProperty);
     return productService.getProducts(PageRequest.of(pageIndex, pageSize, sort))
-        .map(productPayloadConverter::convert);
+        .map(product -> productPayloadConverter.convert(product, uriComponentBuilder));
   }
 
   @GetMapping("/{productId}")
   public Mono<ResponseEntity<ProductPayload>> getProduct(
-      @PathVariable final String productId) {
+      @PathVariable final String productId,
+      final UriComponentsBuilder uriComponentBuilder) {
 
     return productService.getProduct(productId)
-        .map(productPayloadConverter::convert)
+        .map(product -> productPayloadConverter.convert(product, uriComponentBuilder))
         .map(ResponseEntity::ok)
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
@@ -80,21 +78,23 @@ final class ProductController {
   @PutMapping("/{productId}")
   public Mono<ResponseEntity<ProductPayload>> updateProduct(
       @RequestBody @Valid final ProductCreationDataPayload payload,
-      @PathVariable final String productId) {
+      @PathVariable final String productId,
+      final UriComponentsBuilder uriComponentBuilder) {
 
     final ProductCreationData productWriteCommand = productPayloadConverter.convert(payload);
     return productService.updateProduct(productId, productWriteCommand)
-        .map(productPayloadConverter::convert)
+        .map(product -> productPayloadConverter.convert(product, uriComponentBuilder))
         .map(ResponseEntity::ok)
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{productId}")
   public Mono<ResponseEntity<ProductPayload>> deleteProduct(
-      @PathVariable final String productId) {
+      @PathVariable final String productId,
+      final UriComponentsBuilder uriComponentBuilder) {
 
     return productService.deleteProduct(productId)
-        .map(productPayloadConverter::convert)
+        .map(product -> productPayloadConverter.convert(product, uriComponentBuilder))
         .map(ResponseEntity::ok)
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }

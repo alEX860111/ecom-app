@@ -65,7 +65,7 @@ public final class ProductPayload {
   public void setImage(final Image image) {
     this.image = image;
   }
-  
+
   public static final class Image {
 
     private String id;
