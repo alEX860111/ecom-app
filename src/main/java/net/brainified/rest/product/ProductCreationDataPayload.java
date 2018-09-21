@@ -5,7 +5,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public final class ProductWritePayload {
+public final class ProductCreationDataPayload {
 
   @NotBlank
   private String name;
@@ -15,7 +15,7 @@ public final class ProductWritePayload {
 
   @NotNull
   @Valid
-  private ImageWriteReference image;
+  private Image image;
 
   public String getName() {
     return name;
@@ -33,12 +33,27 @@ public final class ProductWritePayload {
     this.price = price;
   }
 
-  public ImageWriteReference getImage() {
+  public Image getImage() {
     return image;
   }
 
-  public void setImage(final ImageWriteReference image) {
+  public void setImage(final Image image) {
     this.image = image;
+  }
+
+  public static final class Image {
+
+    @NotBlank
+    private String id;
+
+    public String getId() {
+      return id;
+    }
+
+    public void setId(final String id) {
+      this.id = id;
+    }
+
   }
 
 }

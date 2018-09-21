@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import net.brainified.rest.Link;
 
-public final class ProductReadPayload {
+public final class ProductPayload {
 
   private String id;
 
@@ -16,7 +16,7 @@ public final class ProductReadPayload {
 
   private Double price;
 
-  private ImageReadReference image;
+  private Image image;
 
   public String getId() {
     return id;
@@ -58,12 +58,36 @@ public final class ProductReadPayload {
     this.price = price;
   }
 
-  public ImageReadReference getImage() {
+  public Image getImage() {
     return image;
   }
 
-  public void setImage(final ImageReadReference image) {
+  public void setImage(final Image image) {
     this.image = image;
+  }
+  
+  public static final class Image {
+
+    private String id;
+
+    private Link link;
+
+    public String getId() {
+      return id;
+    }
+
+    public void setId(final String id) {
+      this.id = id;
+    }
+
+    public Link getLink() {
+      return link;
+    }
+
+    public void setLink(final Link link) {
+      this.link = link;
+    }
+
   }
 
 }

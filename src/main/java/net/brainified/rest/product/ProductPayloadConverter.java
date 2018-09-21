@@ -5,8 +5,8 @@ import net.brainified.domain.product.ProductCreationData;
 
 interface ProductPayloadConverter {
 
-  ProductCreationData convert(ProductWritePayload productWritePayload);
+  ProductCreationData convert(ProductCreationDataPayload productCreationDataPayload);
 
-  ProductReadPayload convert(Product product);
+  ProductPayload convert(Product product);
 
 }

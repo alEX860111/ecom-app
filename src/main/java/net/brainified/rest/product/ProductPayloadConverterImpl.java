@@ -10,17 +10,17 @@ import net.brainified.rest.Link;
 final class ProductPayloadConverterImpl implements ProductPayloadConverter {
 
   @Override
-  public ProductCreationData convert(final ProductWritePayload productWritePayload) {
-    final ProductCreationData productWriteCommand = new ProductCreationData();
-    productWriteCommand.setName(productWritePayload.getName());
-    productWriteCommand.setPrice(productWritePayload.getPrice());
-    productWriteCommand.setImageId(productWritePayload.getImage().getId());
-    return productWriteCommand;
+  public ProductCreationData convert(final ProductCreationDataPayload payload) {
+    final ProductCreationData productCreationData = new ProductCreationData();
+    productCreationData.setName(payload.getName());
+    productCreationData.setPrice(payload.getPrice());
+    productCreationData.setImageId(payload.getImage().getId());
+    return productCreationData;
   }
 
   @Override
-  public ProductReadPayload convert(final Product product) {
-    final ProductReadPayload productPayload = new ProductReadPayload();
+  public ProductPayload convert(final Product product) {
+    final ProductPayload productPayload = new ProductPayload();
     productPayload.setId(product.getId());
     productPayload.setLink(Link.createSelfLink(""));
 
@@ -28,7 +28,7 @@ final class ProductPayloadConverterImpl implements ProductPayloadConverter {
     productPayload.setName(product.getName());
     productPayload.setPrice(product.getPrice());
 
-    final ImageReadReference image = new ImageReadReference();
+    final ProductPayload.Image image = new ProductPayload.Image();
     image.setId(product.getImageId());
     image.setLink(Link.createSelfLink(""));
     productPayload.setImage(image);
