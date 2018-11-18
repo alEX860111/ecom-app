@@ -10,13 +10,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.server.ServerWebExchange;
-
-import net.brainified.MockitoExtension;
-import net.brainified.rest.authentication.JWTAuthenticationConverter;
 
 @ExtendWith(MockitoExtension.class)
 class JWTAuthenticationConverterTest {

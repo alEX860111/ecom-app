@@ -5,10 +5,8 @@ ext {
 	javaJwtVersion = "3.3.0"
 
 	junitGradlePluginVersion ="1.1.0"
-	junitPlatformLauncherVersion="1.1.0"
-	junitVersion = "5.1.0"
-	apiGuardianVersion = "1.0.0"
-	mockitoVersion = "2.21.0"
+	junitVersion = "5.3.1"
+	mockitoVersion = "2.23.0"
 }
 
 	repositories {
@@ -40,9 +38,7 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-security"
 	compile "com.auth0:java-jwt:${javaJwtVersion}"
 	testCompile "org.mockito:mockito-core:${mockitoVersion}"
+	testCompile "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
 	testCompile("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
 	testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
-	testRuntime("org.junit.platform:junit-platform-launcher:${junitPlatformLauncherVersion}")
-	// To avoid compiler warnings about @API annotations in JUnit code
-	testCompileOnly("org.apiguardian:apiguardian-api:${apiGuardianVersion}")
 }

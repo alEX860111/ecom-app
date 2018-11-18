@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -27,11 +28,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import net.brainified.MockitoExtension;
-import net.brainified.rest.authentication.AuthenticationToken;
-import net.brainified.rest.authentication.JWTAlgorithmService;
-import net.brainified.rest.authentication.JWTAuthenticationTokenService;
-import net.brainified.rest.authentication.LoginData;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,7 +46,7 @@ class JWTAuthenticationTokenServiceTest {
 
   @Mock
   private PasswordEncoder passwordEncoder;
-  
+
   @Mock
   private JWTAlgorithmService jWTAlgorithmService;
 
@@ -64,8 +60,6 @@ class JWTAuthenticationTokenServiceTest {
     loginData = new LoginData();
     loginData.setUsername(USER);
     loginData.setPassword(PASSWORD);
-    
-    when(jWTAlgorithmService.getAlgorithm()).thenReturn(Algorithm.HMAC256("xyz"));
   }
 
   @Test
@@ -94,7 +88,9 @@ class JWTAuthenticationTokenServiceTest {
   }
 
   @Test
-  void createToken(@Mock final UserDetails userDetails, @Mock final GrantedAuthority grantedAuthority) {
+  void createToken(@Mock final UserDetails userDetails, @Mock final GrantedAuthority grantedAuthority) throws IllegalArgumentException, UnsupportedEncodingException {
+    when(jWTAlgorithmService.getAlgorithm()).thenReturn(Algorithm.HMAC256("xyz"));
+
     when(grantedAuthority.getAuthority()).thenReturn(ROLE);
     doReturn(Arrays.asList(grantedAuthority)).when(userDetails).getAuthorities();
 
