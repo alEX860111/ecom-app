@@ -1,25 +1,25 @@
 package net.brainified.rest.authentication;
 
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.server.authentication.ServerAuthenticationConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
 
 @Service
-final class JWTAuthenticationConverter implements Function<ServerWebExchange, Mono<Authentication>> {
+final class JWTAuthenticationConverter implements ServerAuthenticationConverter {
 
   private static final Pattern PATTERN = Pattern.compile("Bearer (.+)");
 
   @Override
-  public Mono<Authentication> apply(final ServerWebExchange exchange) {
+  public Mono<Authentication> convert(final ServerWebExchange exchange) {
     final ServerHttpRequest request = exchange.getRequest();
 
     final HttpHeaders headers = request.getHeaders();

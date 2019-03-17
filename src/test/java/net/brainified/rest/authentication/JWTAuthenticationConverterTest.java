@@ -42,27 +42,27 @@ class JWTAuthenticationConverterTest {
   @Test
   void test() {
     headers.put(HttpHeaders.AUTHORIZATION, Arrays.asList("Bearer token"));
-    final Authentication authentication = converter.apply(exchange).block();
+    final Authentication authentication = converter.convert(exchange).block();
     assertEquals("token", authentication.getCredentials());
   }
 
   @Test
   void test_NoToken() {
     headers.put(HttpHeaders.AUTHORIZATION, Arrays.asList("Bearer "));
-    final Authentication authentication = converter.apply(exchange).block();
+    final Authentication authentication = converter.convert(exchange).block();
     assertNull(authentication);
   }
 
   @Test
   void test_NoBearerPrefix() {
     headers.put(HttpHeaders.AUTHORIZATION, Arrays.asList("token"));
-    final Authentication authentication = converter.apply(exchange).block();
+    final Authentication authentication = converter.convert(exchange).block();
     assertNull(authentication);
   }
 
   @Test
   void test_AuthorizationHeader() {
-    final Authentication authentication = converter.apply(exchange).block();
+    final Authentication authentication = converter.convert(exchange).block();
     assertNull(authentication);
   }
 

@@ -22,7 +22,7 @@ class AuthenticationWebFilterConfiguration {
   @Bean
   public AuthenticationWebFilter createAuthenticationWebFilter() {
     final AuthenticationWebFilter filter = new AuthenticationWebFilter(reactiveAuthenticationManager);
-    filter.setAuthenticationConverter(authenticationConverter);
+    filter.setServerAuthenticationConverter(authenticationConverter);
     return filter;
   }
 
