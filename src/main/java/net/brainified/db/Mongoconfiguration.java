@@ -1,30 +1,23 @@
 package net.brainified.db;
 
+import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 
 import com.mongodb.reactivestreams.client.MongoClient;
-import com.mongodb.reactivestreams.client.MongoClients;
+import com.mongodb.reactivestreams.client.MongoDatabase;
 import com.mongodb.reactivestreams.client.gridfs.GridFSBucket;
 import com.mongodb.reactivestreams.client.gridfs.GridFSBuckets;
 
 @Configuration
-class Mongoconfiguration extends AbstractReactiveMongoConfiguration {
+class MongoConfiguration {
 
   @Bean
-  public GridFSBucket gridFSBucket(final MongoClient reactiveMongoClient) throws Exception {
-    return GridFSBuckets.create(reactiveMongoClient.getDatabase(getDatabaseName()));
-  }
+  public GridFSBucket gridFSBucket(final MongoProperties properties, final MongoClient client) throws Exception {
+    final String databaseName = properties.getDatabase();
+    final MongoDatabase database = client.getDatabase(databaseName);
 
-  @Override
-  public MongoClient reactiveMongoClient() {
-    return MongoClients.create();
-  }
-
-  @Override
-  protected String getDatabaseName() {
-    return "DEFAULT_DB";
+    return GridFSBuckets.create(database);
   }
 
 }
